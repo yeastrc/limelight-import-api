@@ -11,7 +11,7 @@
 				<xs:element ref="search_program_info"/>
 				<xs:element ref="reported_peptides">
 					<xs:annotation>
-						<xs:documentation>All the reported peptides from a PSM search. A reported peptide is a string that uniquely identifies an identified peptide (or linked pair of peptides) IN THIS SEARCH. (This string is not used by emozi for this purpose.) A unique peptide i this context is one or two peptide sequences linked together at specific positions in those sequences, and with modifications at specific sites. E.g. PEP[16.01]TIDE would uniquely ID a peptide with this sequence with the given mass shift on the given position. or KEKTIDE(3)--PEPT[16.1]IDE(2) would uniquely identify the crosslink between two peptides with these ssequences at positions 3 and 2 (respectively) and where the second peptide has the shown modification. There is no syntax expected for reported peptide, but the reported peptide string must be unique, and no two reported peptides must describe the same peptide or pair of peptides linked at the same positions with the same modifications.</xs:documentation>
+						<xs:documentation>All the distinct reported peptides from a PSM search. A reported peptide is a string that uniquely identifies an identified peptide IN THIS SEARCH. For example “PEPTIDE” and “PEP[43.023]TIDE” would be different reported peptides, identified by different PSMs. There is no expected syntax for reported peptides, but the reported peptide string must be unique.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 				<xs:element ref="matched_proteins" minOccurs="0">
