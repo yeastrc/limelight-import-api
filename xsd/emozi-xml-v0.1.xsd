@@ -123,7 +123,7 @@
 	</xs:element>
 	<xs:element name="reported_peptide">
 		<xs:annotation>
-			<xs:documentation>A peptide from a peptide spectrum match, may be unlinked, looplinked, or a crosslinked pair of peptides.</xs:documentation>
+			<xs:documentation>A reported peptide resultling from a peptide spectrum match.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -347,28 +347,6 @@
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="linked_position">
-		<xs:annotation>
-			<xs:documentation>A linked position in a peptide.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:attribute name="position" type="peptide_position" use="required"/>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="linked_positions">
-		<xs:annotation>
-			<xs:documentation>The list of linked positions in a peptide.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="linked_position" minOccurs="0" maxOccurs="2">
-					<xs:annotation>
-						<xs:documentation>A linked position in a peptide. A looplinked peptide will have two linked positions. A crosslinked peptide will have one (on each linked peptide). The first residue is position 1.</xs:documentation>
-					</xs:annotation>
-				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
 	<xs:element name="filterable_psm_annotation_type">
 		<xs:annotation>
 			<xs:documentation>A numeric type of psm annotation (such as a score like a q-value for XCorr) that is meant to be used to filter PSMs based on quality of matches. Try to limit indexed annotation types to a minimum.</xs:documentation>
@@ -482,16 +460,6 @@
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:pattern value="([A-Z]+)"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="link_type">
-		<xs:annotation>
-			<xs:documentation>A peptide link type must be this type, limits to 'crosslink' or 'looplink' or 'unlinked' 'unlinked means neither a crosslink nor looplink</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="crosslink"/>
-			<xs:enumeration value="looplink"/>
-			<xs:enumeration value="unlinked"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="peptide_position">
@@ -679,87 +647,6 @@
 				<xs:documentation>Ensure a given name is only present once among the search programs.</xs:documentation>
 			</xs:annotation>
 			<xs:selector xpath="search_program"/>
-			<xs:field xpath="@name"/>
-		</xs:unique>
-	</xs:element>
-	<xs:element name="linker">
-		<xs:annotation>
-			<xs:documentation>A chemical crosslinker used in this experiment.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="monolink_masses" minOccurs="0">
-					<xs:annotation>
-						<xs:documentation>The list of possible masses that monolinks may be reported as having in this search. Required if monolinks were searched for and if spectra are being imported.</xs:documentation>
-					</xs:annotation>
-				</xs:element>
-				<xs:element ref="crosslink_masses" minOccurs="0">
-					<xs:annotation>
-						<xs:documentation>The list of possible masses of this linker in this experiment when both ends of the linker are bound to peptides--such as in the case of crosslinks or looplinks. Required if crosslinks or looplinks were searched for and if spectra are being imported.</xs:documentation>
-					</xs:annotation>
-				</xs:element>
-			</xs:sequence>
-			<xs:attribute name="name" type="xs:string" use="required">
-				<xs:annotation>
-					<xs:documentation>The name of this crosslinker (e.g., "dss" or "edc"). This must match the abbr field in the linker table for a crosslinker currently supported by emozi.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="monolink_mass">
-		<xs:complexType>
-			<xs:attribute name="mass" type="mass" use="required">
-				<xs:annotation>
-					<xs:documentation>The mass, in daltons.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="crosslink_mass">
-		<xs:complexType>
-			<xs:attribute name="mass" type="mass" use="required">
-				<xs:annotation>
-					<xs:documentation>The mass, in daltons.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="monolink_masses">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="monolink_mass" maxOccurs="unbounded">
-					<xs:annotation>
-						<xs:documentation>A mass used for this linker in this search when only one end of the linker is bound to a peptide. Use the same precision or better as when monolinks are reported as dynamic mods on peptides.</xs:documentation>
-					</xs:annotation>
-				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="crosslink_masses">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="crosslink_mass" maxOccurs="unbounded">
-					<xs:annotation>
-						<xs:documentation>A mass used for this linker in this search when both ends are bound to peptides--such as in crosslinks or looplinks</xs:documentation>
-					</xs:annotation>
-				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="linkers">
-		<xs:annotation>
-			<xs:documentation>The chemical linkers used in this experiment. There must be at least one.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="linker" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-		<xs:unique name="linker_name_unique">
-			<xs:annotation>
-				<xs:documentation>Ensure a given linker name isonly present once.</xs:documentation>
-			</xs:annotation>
-			<xs:selector xpath="linker"/>
 			<xs:field xpath="@name"/>
 		</xs:unique>
 	</xs:element>
