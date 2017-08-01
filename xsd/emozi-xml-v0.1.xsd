@@ -1,0 +1,1008 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2016 (http://www.altova.com) by Michael Riffle (University of Washington) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" vc:minVersion="1.1">
+	<xs:element name="emozi_input">
+		<xs:annotation>
+			<xs:documentation>Root element for all data</xs:documentation>
+		</xs:annotation>
+		<!-- Element name must match string in Java class XSD_ElementAttributeNamesConstants  -->
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_program_info"/>
+				<xs:element ref="reported_peptides">
+					<xs:annotation>
+						<xs:documentation>All the reported peptides from a PSM search. A reported peptide is a string that uniquely identifies an identified peptide (or linked pair of peptides) IN THIS SEARCH. (This string is not used by emozi for this purpose.) A unique peptide i this context is one or two peptide sequences linked together at specific positions in those sequences, and with modifications at specific sites. E.g. PEP[16.01]TIDE would uniquely ID a peptide with this sequence with the given mass shift on the given position. or KEKTIDE(3)--PEPT[16.1]IDE(2) would uniquely identify the crosslink between two peptides with these ssequences at positions 3 and 2 (respectively) and where the second peptide has the shown modification. There is no syntax expected for reported peptide, but the reported peptide string must be unique, and no two reported peptides must describe the same peptide or pair of peptides linked at the same positions with the same modifications.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="matched_proteins" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Contains the protein sequences matched by peptides found in the experiment, and associated names, descriptions, and taxonomy IDs for those proteins. This will typically come from the FASTA file used to search the data. Only the proteins matched by the data should be included, not all the proteins in the FASTA file.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="static_modifications" minOccurs="0"/>
+				<xs:element ref="decoy_labels" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>An optional list of decoy labels (strings that are prefixes on protein names that indicate the given protein is a decoy (e.g., "DECOY_") </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="configuration_files" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>(Optional) The configuration files associated with the search.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="fasta_filename" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The filename (not including the path) of the FASTA file used to search the data.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>An optional name to be used for this search in emozi. If not present, a default will be used. This name may be changed within emozi.</xs:documentation>
+				</xs:annotation>
+				<!-- Attribute name must match string in Java class XSD_ElementAttributeNamesConstants  -->
+			</xs:attribute>
+			<xs:attribute name="comment" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>An optional comment to be associated with this search when it is imported into emozi.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:unique name="reported_peptide_string_key">
+			<xs:annotation>
+				<xs:documentation>Ensures the reported peptide strings are unique.</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="reported_peptides/reported_peptide"/>
+			<xs:field xpath="@reported_peptide_string"/>
+		</xs:unique>
+	</xs:element>
+	<xs:element name="search_program">
+		<xs:annotation>
+			<xs:documentation>A search program, such as Kojak or XQuest</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="psm_annotation_types">
+					<xs:annotation>
+						<xs:documentation>The types of annotations this search program has for PSMs--such as quality scores.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="filterable_psm_annotation_types"/>
+							<xs:element ref="descriptive_psm_annotation_types" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="reported_peptide_annotation_types" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The types of annotations this search program may have at the reported peptide level.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="filterable_peptide_annotation_types" minOccurs="0"/>
+							<xs:element ref="descriptive_peptide_annotation_types" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, e.g., "Kojak" or "XQuest" Used to reference this search program in this document.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="display_name">
+				<xs:annotation>
+					<xs:documentation>If present, the value for this attribute will be used to display the name of this program in the web site. If abscent the value for "name" will be used.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="version" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The version of the above program that was run to generate these results.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>(Optional) A description of the search program.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="reported_peptides">
+		<xs:annotation>
+			<xs:documentation>All the reported peptides from a PSM search</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="reported_peptide" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>A reported peptide. See the annotation for "reported_peptides" for a detailed explanation.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="reported_peptide">
+		<xs:annotation>
+			<xs:documentation>A peptide from a peptide spectrum match, may be unlinked, looplinked, or a crosslinked pair of peptides.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="peptides">
+					<xs:annotation>
+						<xs:documentation>A list of peptides associated with a reported peptide in a PSM search. For example, a reported peptide that is a crosslinked pair of peptides will have two peptides associated with it. A looplink or unlink will have one.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="psms">
+					<xs:annotation>
+						<xs:documentation>The PSMs found for this reported peptide in this search.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="reported_peptide_annotations" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Any annotations generated at the reported-peptide-level for this reported peptide.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="filterable_reported_peptide_annotations" minOccurs="0"/>
+							<xs:element ref="descriptive_reported_peptide_annotations" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+					<xs:unique name="reported_peptide_score_program_unique">
+						<xs:annotation>
+							<xs:documentation>Ensure a reported peptide only has one score for a given type from a given program.</xs:documentation>
+						</xs:annotation>
+						<xs:selector xpath="*/*"/>
+						<xs:field xpath="@search_program"/>
+						<xs:field xpath="@annotation_name"/>
+					</xs:unique>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="reported_peptide_string" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The string that uniquely identifies this peptide (or peptides) linked at these specific positions (if any), with the given positions and respective masses of modifications (if any). See the annotation of "reported_peptides" for more details.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_reported_peptide_annotations">
+		<xs:annotation>
+			<xs:documentation>The numeric annotations (usually scores of some type) assigned to a reported peptide in the experiment that are meant to describe the likelihood of the peptide being present given all PSMs. Intended to be used to filter out poor matches. Examples include p-value, q-value, PEP</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_reported_peptide_annotation" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>An annotation or score assigned to a reported peptide</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_reported_peptide_annotations">
+		<xs:annotation>
+			<xs:documentation>The descriptive annotations (string or numeric) assigned to a reported peptide in the experiment. Not intended to be used to filter out poor matches.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="descriptive_reported_peptide_annotation" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>An annotation or score assigned to a reported peptide</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_reported_peptide_annotation">
+		<xs:annotation>
+			<xs:documentation>A numeric annotation (usually a score of some type) assigned to a reported peptide in the experiment that are meant to describe the likelihood of the peptide being present given all PSMs. Intended to be used to filter out poor matches. Examples include p-value, q-value, PEP</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="search_program" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the peptide annotation type (e.g., "q-value"). Must be found in the possible score types for the above search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:decimal" use="required">
+				<xs:annotation>
+					<xs:documentation>The value or score assigned for the given annotation type from the given search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_reported_peptide_annotation">
+		<xs:annotation>
+			<xs:documentation>A descriptive annotations (string or numeric) assigned to a reported peptide in the experiment. Not intended to be used to filter out poor matches.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="search_program" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the peptide annotation type (e.g., "q-value"). Must be found in the possible score types for the above search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The value or score assigned for the given annotation type from the given search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="peptides">
+		<xs:annotation>
+			<xs:documentation>A list of peptides associated with a reported peptide in a PSM search.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="peptide" maxOccurs="2">
+					<xs:annotation>
+						<xs:documentation>A peptide parsed from the reported peptide. Unlinked and looplinked reported peptides will result in one peptide. Crosslinked reported peptides will result in two peptides.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="peptide">
+		<xs:annotation>
+			<xs:documentation>A peptide parsed from the reported peptide.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="modifications" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="sequence" type="sequence_type" use="required">
+				<xs:annotation>
+					<xs:documentation>The sequence of the peptide, without any special characters.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="matched_proteins">
+		<xs:annotation>
+			<xs:documentation>Contains the protein sequences matched by peptides found in the experiment, and associated names, descriptions, and taxonomy IDs for those proteins. This will typically come from the FASTA file used to search the data. Only the proteins matched by the data should be included, not all the proteins in the FASTA file.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="protein" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>A protein found in the experiment.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="protein">
+		<xs:annotation>
+			<xs:documentation>A protein found in the experiment.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="protein_annotation" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Annotations for this sequence from the sequence database used to search the data. Since there may be multiple annotations for a single sequence (as separated by control-A characters in a FASTA file), each annotation should appear hear associated with a single protein.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="sequence" type="sequence_type" use="required">
+				<xs:annotation>
+					<xs:documentation>The amino acid sequence for this protein.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="protein_annotation">
+		<xs:annotation>
+			<xs:documentation>Annotations for this sequence from the sequence database used to search the data. Since there may be multiple annotations for a single sequence (as separated by control-A characters in a FASTA file), each annotation should appear hear associated with a single protein.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of this protein, used to report protein names in the emozi web application. Typically, this is the name for a FASTA entry in a FASTA file in the form of: >NAME DESCRIPTION</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The description of the protein.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="ncbi-taxonomy-id" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>The NCBI taxonomy ID for this protein. E.g. 9606 for human, or 4932 for S. cerevisiae.  Used for taxonomy-level filtering in the emozi web application. If not present, or set to 0, the species name will appear as "Species Unknown" in the web application.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="modifications">
+		<xs:annotation>
+			<xs:documentation>The modifications identified for a peptide.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="modification" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="modification">
+		<xs:annotation>
+			<xs:documentation>A mass modification of a residue. E.g., a PTM</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="mass" type="mass" use="required">
+				<xs:annotation>
+					<xs:documentation>The mass of the modification.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="position" type="peptide_position" use="required">
+				<xs:annotation>
+					<xs:documentation>The position in the peptide (starting at 1) of the modification.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="linked_position">
+		<xs:annotation>
+			<xs:documentation>A linked position in a peptide.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="position" type="peptide_position" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="linked_positions">
+		<xs:annotation>
+			<xs:documentation>The list of linked positions in a peptide.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="linked_position" minOccurs="0" maxOccurs="2">
+					<xs:annotation>
+						<xs:documentation>A linked position in a peptide. A looplinked peptide will have two linked positions. A crosslinked peptide will have one (on each linked peptide). The first residue is position 1.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_psm_annotation_type">
+		<xs:annotation>
+			<xs:documentation>A numeric type of psm annotation (such as a score like a q-value for XCorr) that is meant to be used to filter PSMs based on quality of matches. Try to limit indexed annotation types to a minimum.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name for this score, such as "q-value". Displayed on web site.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A description for what this score is. Will be shown in emozi as a tooltip for this score.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="filter_direction" type="filter_direction_type" use="required">
+				<xs:annotation>
+					<xs:documentation>The direction a filterable annotation type is sorted in.  If set to "below", attributes with lower values are considered more significant (such as in the case of p-values). If set to "above", attributes with higher values are considered more significant (such as in the case of XCorr).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="default_filter" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>If present, and if set to true, this score will be used as a default PSM-level filter when viewing data. Use sparingly.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="default_filter_value" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>This is the default cutoff value for this score when filtering data. If default_filter is set to true, this value must be set.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_peptide_annotation_type">
+		<xs:annotation>
+			<xs:documentation>A numeric type of peptide annotation (such as a score like a q-value for XCorr) that is meant to be used to filter peptides based on quality of matches. Try to limit indexed annotation types to a minimum.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name for this score, such as "q-value". Displayed on web site.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A description for what this score is. Will be shown in emozi as a tooltip for this score.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="filter_direction" type="filter_direction_type" use="required">
+				<xs:annotation>
+					<xs:documentation>The direction a filterable annotation type is sorted in.  If set to "below", attributes with lower values are considered more significant (such as in the case of p-values). If set to "above", attributes with higher values are considered more significant (such as in the case of XCorr).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="default_filter" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>If present, and if set to true, this score will be used as a default peptide-level filter when viewing data. Use sparingly.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="default_filter_value" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>This is the default cutoff value for this score when filtering data. If default_filter is set to true, this value must be set.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_psm_annotation_type">
+		<xs:annotation>
+			<xs:documentation>An annotation of any type (numeric or string) that is not meant to be used as a possible filter for filtering out PSMs based on quality of matches. Example could include "scan number" or "charge"</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name for this score, such as "q-value". Displayed on web site.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A description for what this score is. Will be shown in emozi as a tooltip for this score.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_peptide_annotation_type">
+		<xs:annotation>
+			<xs:documentation>An annotation of any type (numeric or string) that is not meant to be used as a possible filter for filtering out peptides based on quality of matches.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name for this score, such as "q-value". Displayed on web site.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A description for what this score is. Will be shown in emozi as a tooltip for this score.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="filter_direction_type">
+		<xs:annotation>
+			<xs:documentation>The direction a filterable annotation type is sorted in.  If set to "below", attributes with lower values are considered more significant (such as in the case of p-values). If set to "above", attributes with higher values are considered more significant (such as in the case of XCorr).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="above"/>
+			<xs:enumeration value="below"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="sequence_type">
+		<xs:annotation>
+			<xs:documentation>Reported sequence strings must be of this type, includes only amino acid sequence</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([A-Z]+)"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="link_type">
+		<xs:annotation>
+			<xs:documentation>A peptide link type must be this type, limits to 'crosslink' or 'looplink' or 'unlinked' 'unlinked means neither a crosslink nor looplink</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="crosslink"/>
+			<xs:enumeration value="looplink"/>
+			<xs:enumeration value="unlinked"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="peptide_position">
+		<xs:annotation>
+			<xs:documentation>A position in a peptide, where 1 is the first position.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:positiveInteger">
+			<xs:minInclusive value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="mass">
+		<xs:annotation>
+			<xs:documentation>Mass represented in daltons</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal"/>
+	</xs:simpleType>
+	<xs:element name="filterable_psm_annotation_types">
+		<xs:annotation>
+			<xs:documentation>The collection of numeric annotation types (such as scores) that may be associated with a PSM that are meant to be used to filter based on quality</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_psm_annotation_type" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_peptide_annotation_types">
+		<xs:annotation>
+			<xs:documentation>The collection of numeric annotation types (such as scores) that may be associated with a reported peptide that are meant to be used to filter based on quality</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_peptide_annotation_type" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_psm_annotation_types">
+		<xs:annotation>
+			<xs:documentation>The collection of annotation types (string or numeric) associated with PSMs that are descriptive or not meant to be used to filter based on quality</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="descriptive_psm_annotation_type" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_peptide_annotation_types">
+		<xs:annotation>
+			<xs:documentation>The collection of annotation types (string or numeric) associated with PSMs that are descriptive or not meant to be used to filter based on quality</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="descriptive_peptide_annotation_type" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>An annotation of any type (numeric or string) that is not meant to be used as a possible filter for filtering out peptides based on quality of matches. Examples include calculated mass or validation status.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_psm_annotation">
+		<xs:annotation>
+			<xs:documentation>A numeric annotation (usually a score) assigned to a peptide spectrum match (PSM) that is meant to describe the quality of the match and may be used to filter out poor matches. Examples include p-value, q-value, XCorr</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="search_program" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the psm annotation type (e.g., "q-value"). Must be found in the possible score types for the above search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:decimal" use="required">
+				<xs:annotation>
+					<xs:documentation>The value (ie, score) assigned for the given annotationtype from the given search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_psm_annotation">
+		<xs:annotation>
+			<xs:documentation>A descriptive annotation (numeric or string) assigned to a peptide spectrum match (PSM) that is not meant to describe the quality of the match or filter out poor matches. Examples include scan number of precursor charge state.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="search_program" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the psm annotation type (e.g., "q-value"). Must be found in the possible score types for the above search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The value (ie, score) assigned for the given annotationtype from the given search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_psm_annotations">
+		<xs:annotation>
+			<xs:documentation>The numeric annotations (usually scores of some type) assigned to the peptide spectrum match (PSM) that are meant to describe the quality of the match and may be used to filter out poor matches. Examples include p-value, q-value, XCorr</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_psm_annotation" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_psm_annotations">
+		<xs:annotation>
+			<xs:documentation>The descriptive annotations (numeric or string) assigned to the peptide spectrum match (PSM) that are not meant to describe the quality of the match or filter out poor matches. Examples include scan number of precursor charge state.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="descriptive_psm_annotation" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>A descriptive annotation (numeric or string) assigned to a peptide spectrum match (PSM) that is not meant to describe the quality of the match or filter out poor matches.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="psm">
+		<xs:annotation>
+			<xs:documentation>A PSM</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_psm_annotations"/>
+				<xs:element ref="descriptive_psm_annotations" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The descriptive annotations (numeric or string) assigned to the peptide spectrum match (PSM) that are not meant to describe the quality of the match or filter out poor matches.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="scan_file_name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>(Optional) The filename of the file in which this scan may be found. Will be used to locate the spectrum associated with this PSM when data are uploaded.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="scan_number" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>(Optional) The scan number used to look up the scan in the given file. Will be used to locate the spectrum associated with this PSM when data are uploaded.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="precursor_charge" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>(Optional) The predicted charge of the precursor ion. Used for accurately annotating spectra in web interface.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:unique name="psm_program_score_unique">
+			<xs:annotation>
+				<xs:documentation>Ensure a PSM only has one score for a given name from a given search program.</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="*/*"/>
+			<xs:field xpath="@search_program"/>
+			<xs:field xpath="@annotation_name"/>
+		</xs:unique>
+	</xs:element>
+	<xs:element name="psms">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="psm" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="search_programs">
+		<xs:annotation>
+			<xs:documentation>The search program(s) used to generate the PSMs and associated scores in this search. More than one search program may be used, as in the case of using Percolator to assign q-values for data search with Kojak. Percolator and Kojak would each have an entry here. However, all PSMs must be annotated by all search programs and all search programs must refer to reported peptides using the same string.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_program" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="search_program_unique">
+			<xs:annotation>
+				<xs:documentation>Ensure a given name is only present once among the search programs.</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="search_program"/>
+			<xs:field xpath="@name"/>
+		</xs:unique>
+	</xs:element>
+	<xs:element name="linker">
+		<xs:annotation>
+			<xs:documentation>A chemical crosslinker used in this experiment.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="monolink_masses" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The list of possible masses that monolinks may be reported as having in this search. Required if monolinks were searched for and if spectra are being imported.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="crosslink_masses" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The list of possible masses of this linker in this experiment when both ends of the linker are bound to peptides--such as in the case of crosslinks or looplinks. Required if crosslinks or looplinks were searched for and if spectra are being imported.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of this crosslinker (e.g., "dss" or "edc"). This must match the abbr field in the linker table for a crosslinker currently supported by emozi.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="monolink_mass">
+		<xs:complexType>
+			<xs:attribute name="mass" type="mass" use="required">
+				<xs:annotation>
+					<xs:documentation>The mass, in daltons.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="crosslink_mass">
+		<xs:complexType>
+			<xs:attribute name="mass" type="mass" use="required">
+				<xs:annotation>
+					<xs:documentation>The mass, in daltons.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="monolink_masses">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="monolink_mass" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>A mass used for this linker in this search when only one end of the linker is bound to a peptide. Use the same precision or better as when monolinks are reported as dynamic mods on peptides.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="crosslink_masses">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="crosslink_mass" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>A mass used for this linker in this search when both ends are bound to peptides--such as in crosslinks or looplinks</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="linkers">
+		<xs:annotation>
+			<xs:documentation>The chemical linkers used in this experiment. There must be at least one.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="linker" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="linker_name_unique">
+			<xs:annotation>
+				<xs:documentation>Ensure a given linker name isonly present once.</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="linker"/>
+			<xs:field xpath="@name"/>
+		</xs:unique>
+	</xs:element>
+	<xs:element name="configuration_file">
+		<xs:annotation>
+			<xs:documentation>A configuration or properties file associated with the search. E.g. Kojak.conf</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="file_content"/>
+			</xs:sequence>
+			<xs:attribute name="search_program" use="required"/>
+			<xs:attribute name="file_name" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="file_content" type="xs:base64Binary">
+		<xs:annotation>
+			<xs:documentation>The contents of a file, stored as base64</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="configuration_files">
+		<xs:annotation>
+			<xs:documentation>The configuration files associated with the search.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="configuration_file" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="static_modification">
+		<xs:annotation>
+			<xs:documentation>A mass shift that is always applied to the given amino acid when calculating theoretical peptide or ion masses</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="amino_acid" use="required">
+				<xs:annotation>
+					<xs:documentation>The one-letter code for the amino acid with the static modification.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="mass_change" type="mass" use="required">
+				<xs:annotation>
+					<xs:documentation>The mass shift applied to all instances of the above amino acid.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="static_modifications">
+		<xs:annotation>
+			<xs:documentation>A collection of mass shifts that are always applied to the respective amino acids when calculating theoretical peptide or ion masses</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="static_modification" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="static_mod_residue_unique">
+			<xs:annotation>
+				<xs:documentation>Ensure only one static mod is present for any amino acid residue.</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="static_modification"/>
+			<xs:field xpath="@amino_acid"/>
+		</xs:unique>
+	</xs:element>
+	<xs:element name="decoy_labels">
+		<xs:annotation>
+			<xs:documentation>A list of decoy labels (strings that are prefixes on protein names that indicate the given protein is a decoy (e.g., "DECOY_")</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="decoy_label" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="decoy_label">
+		<xs:annotation>
+			<xs:documentation>A decoy label is used to identify a protein to which a peptide is matched during protein inference as a decoy protein (used to calculate FDR statistics). Matches to decoy proteins will be ignored and not inserted into the database as a matched protein for peptides. Example: <decoy_label prefix="DECOY_"/>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="prefix" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Any protein name beginning with the supplied string will be considered a decoy protein and ignored.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="search_program_info">
+		<xs:annotation>
+			<xs:documentation>Information relating to the search program(s) used to generate the peptide spectrum matches and scores/annotations for PSMs and peptides.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_programs"/>
+				<xs:element ref="annotation_cutoffs_on_import" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Optional, but recommended, cutoffs to use when importing data. E.g., limit imported PSMs to those with a q-value of 0.05 or better. Data not meeting these cutoffs will not be imported into the database--helps to prevent the database filling up with unwanted (and unneeded) data.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="default_visible_annotations"/>
+				<xs:element ref="annotation_sort_order" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The sort order applied to filterable annotations when presenting the default listing of PSMs or peptides. The order will be in the order the annotations appear here. E.g. if "q-value" is listed first and "p-value" is listed next, the items will be sorted on q-value first, then, sorted on p-value in the case of ties. Note: all annotation types listed here must be filterable. If this element is not present, no default sorting will be applied to listed PSMs or peptides in emozi.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="annotation_cutoffs_on_import">
+		<xs:annotation>
+			<xs:documentation>The cutoffs used to exclude data while importing.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="psm_annotation_cutoffs_on_import"/>
+				<xs:element ref="reported_peptide_annotation_cutoffs_on_import" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="psm_annotation_cutoffs_on_import">
+		<xs:annotation>
+			<xs:documentation>The PSM-level annotation cutoffs used to exclude data while importing.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_annotation_cutoff" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="reported_peptide_annotation_cutoffs_on_import">
+		<xs:annotation>
+			<xs:documentation>The peptide-level annotation cutoffs used to exclude data while importing.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_annotation_cutoff" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="search_annotation_cutoff">
+		<xs:annotation>
+			<xs:documentation>A reference to an annotation in a search program.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="search_program" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of a search program, must match a name for a search program in this document. E.g., "kojak"</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the annotation, must match a name of an annotation for the search_program. E.g., "q-value"</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="cutoff_value" type="xs:decimal" use="required">
+				<xs:annotation>
+					<xs:documentation>This is the cutoff value for this score for excluding data while importing into emozi.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="default_visible_annotations">
+		<xs:annotation>
+			<xs:documentation>The annotations from the search program(s) that are visible by default in the emozi web app.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="visible_psm_annotations"/>
+				<xs:element ref="visible_reported_peptide_annotations" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="visible_psm_annotations">
+		<xs:annotation>
+			<xs:documentation>The PSM-level annotations that are visible by default when viewing PSM-level data.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_annotation" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="visible_reported_peptide_annotations">
+		<xs:annotation>
+			<xs:documentation>The peptide-level annotations that are visible by default.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_annotation" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="search_annotation">
+		<xs:annotation>
+			<xs:documentation>A reference to an annotation in a search program.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="search_program" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of a search program, must match a name for a search program in this document. E.g., "kojak"</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the annotation, must match a name of an annotation for the search_program. E.g., "q-value"</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="annotation_sort_order">
+		<xs:annotation>
+			<xs:documentation>The sort order applied to filterable annotation when presenting the default listing of PSMs or peptides. The order will be in the order the annotations appear here. E.g. if "q-value" is listed first and "p-value" is listed next, the items will be sorted on q-value first, then, sorted on p-value in the case of ties. Note: all annotation types listed here must be filterable. If this element is not present, no default sorting will be applied to listed PSMs or peptides in emozi.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="psm_annotation_sort_order" minOccurs="0"/>
+				<xs:element ref="reported_peptide_annotation_sort_order" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="psm_annotation_sort_order">
+		<xs:annotation>
+			<xs:documentation>The sort order applied to filterable PSM annotations when presenting the default listing of PSMs. The order will be in the order the annotations appear here. E.g. if "q-value" is listed first and "p-value" is listed next, the PSMs will be sorted on q-value first, then, sorted on p-value in the case of ties. Note: all annotation types listed here must be filterable. If this element is not present, no default sorting will be applied to listed PSMs.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_annotation" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="reported_peptide_annotation_sort_order">
+		<xs:annotation>
+			<xs:documentation>The sort order applied to filterable peptide annotations when presenting the default listing of peptides. The order will be in the order the annotations appear here. E.g. if "q-value" is listed first and "p-value" is listed next, the peptides will be sorted on q-value first, then, sorted on p-value in the case of ties. Note: all annotation types listed here must be filterable. If this element is not present, no default sorting will be applied to listed peptides.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_annotation" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
