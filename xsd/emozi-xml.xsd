@@ -14,9 +14,14 @@
 						<xs:documentation>All the distinct reported peptides from a PSM search. A reported peptide is a string that uniquely identifies an identified peptide IN THIS SEARCH. For example “PEPTIDE” and “PEP[43.023]TIDE” would be different reported peptides, identified by different PSMs. There is no expected syntax for reported peptides, but the reported peptide string must be unique.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element ref="matched_proteins" minOccurs="0">
+				<xs:element ref="matched_proteins">
 					<xs:annotation>
 						<xs:documentation>Contains the protein sequences matched by peptides found in the experiment, and associated names, descriptions, and taxonomy IDs for those proteins. This will typically come from the FASTA file used to search the data. Only the proteins matched by the data should be included, not all the proteins in the FASTA file.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="matched_protein_groups" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Only required if protein inference was performed. The indistringuishable protein groups resulting from a protein inference algorithm. A protein group is a group of proteins all exclusively identified by the same list of 1 or more peptides.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 				<xs:element ref="static_modifications" minOccurs="0"/>
@@ -127,11 +132,6 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="peptides">
-					<xs:annotation>
-						<xs:documentation>A list of peptides associated with a reported peptide in a PSM search. For example, a reported peptide that is a crosslinked pair of peptides will have two peptides associated with it. A looplink or unlink will have one.</xs:documentation>
-					</xs:annotation>
-				</xs:element>
 				<xs:element ref="psms">
 					<xs:annotation>
 						<xs:documentation>The PSMs found for this reported peptide in this search.</xs:documentation>
@@ -156,10 +156,17 @@
 						<xs:field xpath="@annotation_name"/>
 					</xs:unique>
 				</xs:element>
+				<xs:element ref="modifications" minOccurs="0"/>
+				<xs:element ref="matched_protein_group_refs" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="reported_peptide_string" type="xs:string" use="required">
 				<xs:annotation>
-					<xs:documentation>The string that uniquely identifies this peptide (or peptides) linked at these specific positions (if any), with the given positions and respective masses of modifications (if any). See the annotation of "reported_peptides" for more details.</xs:documentation>
+					<xs:documentation>A string that uniquely identifies this peptide sequence and any dynamic mods. E.g., "PEPTI[23.45]DE". No specific syntax is expect, that only requirement is that it is unique.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="sequence" type="sequence_type" use="required">
+				<xs:annotation>
+					<xs:documentation>The naked sequence of the peptide, without any special characters or modification information. E.g. "PEPTIDE".</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
@@ -236,35 +243,6 @@
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="peptides">
-		<xs:annotation>
-			<xs:documentation>A list of peptides associated with a reported peptide in a PSM search.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="peptide" maxOccurs="2">
-					<xs:annotation>
-						<xs:documentation>A peptide parsed from the reported peptide. Unlinked and looplinked reported peptides will result in one peptide. Crosslinked reported peptides will result in two peptides.</xs:documentation>
-					</xs:annotation>
-				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="peptide">
-		<xs:annotation>
-			<xs:documentation>A peptide parsed from the reported peptide.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="modifications" minOccurs="0"/>
-			</xs:sequence>
-			<xs:attribute name="sequence" type="sequence_type" use="required">
-				<xs:annotation>
-					<xs:documentation>The sequence of the peptide, without any special characters.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-		</xs:complexType>
-	</xs:element>
 	<xs:element name="matched_proteins">
 		<xs:annotation>
 			<xs:documentation>Contains the protein sequences matched by peptides found in the experiment, and associated names, descriptions, and taxonomy IDs for those proteins. This will typically come from the FASTA file used to search the data. Only the proteins matched by the data should be included, not all the proteins in the FASTA file.</xs:documentation>
@@ -287,13 +265,18 @@
 			<xs:sequence>
 				<xs:element ref="protein_annotation" maxOccurs="unbounded">
 					<xs:annotation>
-						<xs:documentation>Annotations for this sequence from the sequence database used to search the data. Since there may be multiple annotations for a single sequence (as separated by control-A characters in a FASTA file), each annotation should appear hear associated with a single protein.</xs:documentation>
+						<xs:documentation>Annotations for this protein sequence from the sequence database used to search the data. Since there may be multiple annotations for a single sequence (separate entries for the same protein sequence or multiple annotations separated by control-A characters in a FASTA file), each annotation should appear here as a separate annotation for the protein sequence.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 			</xs:sequence>
 			<xs:attribute name="sequence" type="sequence_type" use="required">
 				<xs:annotation>
 					<xs:documentation>The amino acid sequence for this protein.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="unique_id" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A string that uniquely identifies this protein sequence. If protein inference was performed, this attribute is required. This is the string referenced by the matched protein elements in protein groups.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
@@ -305,7 +288,7 @@
 		<xs:complexType>
 			<xs:attribute name="name" type="xs:string" use="required">
 				<xs:annotation>
-					<xs:documentation>The name of this protein, used to report protein names in the emozi web application. Typically, this is the name for a FASTA entry in a FASTA file in the form of: >NAME DESCRIPTION</xs:documentation>
+					<xs:documentation>Must be unique. A name for this protein sequence, used to report protein names in the emozi web application. Typically, this is the name for a FASTA entry in a FASTA file in the form of: >NAME DESCRIPTION.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 			<xs:attribute name="description" type="xs:string">
@@ -889,6 +872,62 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="search_annotation" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="matched_protein_groups">
+		<xs:annotation>
+			<xs:documentation>The indistringuishable protein groups resulting from a protein inference algorithm. A protein group is a group of proteins all exclusively identified by the same list of 1 or more peptides.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="protein_group" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>A group of 1 or more proteins that was exclusively identified by the same list of peptides. </xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="matched_protein_ref" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>A protein sequence contained in this protein group. This is reference to a matched protein sequence (see matched_proteins element).</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="unique_id" type="xs:string" use="required">
+										<xs:annotation>
+											<xs:documentation>A string that uniquely identifies a matched protein sequence (see matched_proteins element).</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="unique_id" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation>A string that uniquely identifies this protein group. Must be unique among protein group unique_ids. This is used to list which protein groups are associated with which peptides.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="matched_protein_group_refs">
+		<xs:annotation>
+			<xs:documentation>If protein inference was performed, this is the list of protein groups to which this peptide was matched.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="matched_protein_group_ref" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>A protein group to which this peptide was matched.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="unique_id" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation>The unique id of the protein group to which this peptide was matched. See the matched_protein_groups element for more information.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
