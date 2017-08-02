@@ -67,13 +67,13 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="psm_annotation_types">
+				<xs:element name="psm_annotation_types" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>The types of annotations this search program has for PSMs--such as quality scores.</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element ref="filterable_psm_annotation_types"/>
+							<xs:element ref="filterable_psm_annotation_types" minOccurs="0"/>
 							<xs:element ref="descriptive_psm_annotation_types" minOccurs="0"/>
 						</xs:sequence>
 					</xs:complexType>
@@ -86,6 +86,17 @@
 						<xs:sequence>
 							<xs:element ref="filterable_peptide_annotation_types" minOccurs="0"/>
 							<xs:element ref="descriptive_peptide_annotation_types" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="matched_protein_annotation_types" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The types of annotations this search program may have at the reported peptide level.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="filterable_protein_annotation_types" minOccurs="0"/>
+							<xs:element ref="descriptive_protein_annotation_types" minOccurs="0"/>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -199,6 +210,34 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="filterable_matched_protein_annotations">
+		<xs:annotation>
+			<xs:documentation>The numeric annotations (usually scores of some type) assigned to a protein sequence in the experiment that are meant to describe the likelihood of the protein being present. Intended to be used to filter out poor matches. Examples include p-value, q-value, PEP</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_matched_protein_annotation" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>An annotation or score assigned to a reported peptide</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_matched_protein_annotations">
+		<xs:annotation>
+			<xs:documentation>The descriptive annotations (string or numeric) assigned to a reported peptide in the experiment. Not intended to be used to filter out poor matches.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="descriptive_matched_protein_annotation" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>An annotation or score assigned to a protein sequence.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="filterable_reported_peptide_annotation">
 		<xs:annotation>
 			<xs:documentation>A numeric annotation (usually a score of some type) assigned to a reported peptide in the experiment that are meant to describe the likelihood of the peptide being present given all PSMs. Intended to be used to filter out poor matches. Examples include p-value, q-value, PEP</xs:documentation>
@@ -243,6 +282,50 @@
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="filterable_matched_protein_annotation">
+		<xs:annotation>
+			<xs:documentation>A numeric annotation (usually a score of some type) assigned to a protein sequence in the experiment that are meant to describe the likelihood of the protein being present. Intended to be used to filter out poor matches. Examples include p-value, q-value, PEP</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="search_program" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the protein annotation type (e.g., "q-value"). Must be found in the possible score types for the above search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:decimal" use="required">
+				<xs:annotation>
+					<xs:documentation>The value or score assigned for the given annotation type from the given search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_matched_protein_annotation">
+		<xs:annotation>
+			<xs:documentation>A descriptive annotations (string or numeric) assigned to a protein sequence in the experiment. Not intended to be used to filter out poor matches.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="search_program" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the protein annotation type (e.g., "q-value"). Must be found in the possible score types for the above search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The value or score assigned for the given annotation type from the given search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="matched_proteins">
 		<xs:annotation>
 			<xs:documentation>Contains the protein sequences matched by peptides found in the experiment, and associated names, descriptions, and taxonomy IDs for those proteins. This will typically come from the FASTA file used to search the data. Only the proteins matched by the data should be included, not all the proteins in the FASTA file.</xs:documentation>
@@ -263,10 +346,21 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="protein_annotation" maxOccurs="unbounded">
+				<xs:element ref="protein_label" maxOccurs="unbounded">
 					<xs:annotation>
 						<xs:documentation>Annotations for this protein sequence from the sequence database used to search the data. Since there may be multiple annotations for a single sequence (separate entries for the same protein sequence or multiple annotations separated by control-A characters in a FASTA file), each annotation should appear here as a separate annotation for the protein sequence.</xs:documentation>
 					</xs:annotation>
+				</xs:element>
+				<xs:element name="matched_protein_annotations" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Any annotations generated at the protein-level for this protein sequence.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="filterable_matched_protein_annotations" minOccurs="0"/>
+							<xs:element ref="descriptive_matched_protein_annotations" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
 			<xs:attribute name="sequence" type="sequence_type" use="required">
@@ -281,7 +375,7 @@
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="protein_annotation">
+	<xs:element name="protein_label">
 		<xs:annotation>
 			<xs:documentation>Annotations for this sequence from the sequence database used to search the data. Since there may be multiple annotations for a single sequence (as separated by control-A characters in a FASTA file), each annotation should appear hear associated with a single protein.</xs:documentation>
 		</xs:annotation>
@@ -394,6 +488,38 @@
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="filterable_protein_annotation_type">
+		<xs:annotation>
+			<xs:documentation>A numeric type of protein annotation (such as a score like a q-value) that is meant to be used to filter proteins based on quality of matches. Try to limit indexed annotation types to a minimum.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name for this score, such as "q-value". Displayed on web site.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A description for what this score is. Will be shown in emozi as a tooltip for this score.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="filter_direction" type="filter_direction_type" use="required">
+				<xs:annotation>
+					<xs:documentation>The direction a filterable annotation type is sorted in.  If set to "below", attributes with lower values are considered more significant (such as in the case of p-values). If set to "above", attributes with higher values are considered more significant (such as in the case of XCorr).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="default_filter" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>If present, and if set to true, this score will be used as a default peptide-level filter when viewing data. Use sparingly.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="default_filter_value" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>This is the default cutoff value for this score when filtering data. If default_filter is set to true, this value must be set.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="descriptive_psm_annotation_type">
 		<xs:annotation>
 			<xs:documentation>An annotation of any type (numeric or string) that is not meant to be used as a possible filter for filtering out PSMs based on quality of matches. Example could include "scan number" or "charge"</xs:documentation>
@@ -419,6 +545,23 @@
 			<xs:attribute name="name" type="xs:string" use="required">
 				<xs:annotation>
 					<xs:documentation>The name for this score, such as "q-value". Displayed on web site.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A description for what this score is. Will be shown in emozi as a tooltip for this score.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_protein_annotation_type">
+		<xs:annotation>
+			<xs:documentation>An annotation of any type (numeric or string) that is not meant to be used as a possible filter for filtering out proteins based on quality of matches.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name for this score, such as "molecular weight". Displayed on web site.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 			<xs:attribute name="description" type="xs:string">
@@ -479,6 +622,16 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="filterable_protein_annotation_types">
+		<xs:annotation>
+			<xs:documentation>The collection of numeric annotation types (such as scores) that may be associated with a protein that are meant to be used to filter based on quality</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_protein_annotation_type" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="descriptive_psm_annotation_types">
 		<xs:annotation>
 			<xs:documentation>The collection of annotation types (string or numeric) associated with PSMs that are descriptive or not meant to be used to filter based on quality</xs:documentation>
@@ -500,6 +653,16 @@
 						<xs:documentation>An annotation of any type (numeric or string) that is not meant to be used as a possible filter for filtering out peptides based on quality of matches. Examples include calculated mass or validation status.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_protein_annotation_types">
+		<xs:annotation>
+			<xs:documentation>The collection of annotation types (string or numeric) associated with proteins that are descriptive or not meant to be used to filter based on quality</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="descriptive_protein_annotation_type" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -751,6 +914,7 @@
 			<xs:sequence>
 				<xs:element ref="psm_annotation_cutoffs_on_import"/>
 				<xs:element ref="reported_peptide_annotation_cutoffs_on_import" minOccurs="0"/>
+				<xs:element ref="matched_protein_annotation_cutoffs_on_import"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -767,6 +931,16 @@
 	<xs:element name="reported_peptide_annotation_cutoffs_on_import">
 		<xs:annotation>
 			<xs:documentation>The peptide-level annotation cutoffs used to exclude data while importing.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_annotation_cutoff" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="matched_protein_annotation_cutoffs_on_import">
+		<xs:annotation>
+			<xs:documentation>The protein-level annotation cutoffs used to exclude data while importing.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -804,6 +978,7 @@
 			<xs:sequence>
 				<xs:element ref="visible_psm_annotations"/>
 				<xs:element ref="visible_reported_peptide_annotations" minOccurs="0"/>
+				<xs:element ref="visible_matched_protein_annotations" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -820,6 +995,16 @@
 	<xs:element name="visible_reported_peptide_annotations">
 		<xs:annotation>
 			<xs:documentation>The peptide-level annotations that are visible by default.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_annotation" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="visible_matched_protein_annotations">
+		<xs:annotation>
+			<xs:documentation>The protein-level annotations that are visible by default.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -852,6 +1037,7 @@
 			<xs:sequence>
 				<xs:element ref="psm_annotation_sort_order" minOccurs="0"/>
 				<xs:element ref="reported_peptide_annotation_sort_order" minOccurs="0"/>
+				<xs:element ref="matched_protein_annotation_sort_order" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -868,6 +1054,16 @@
 	<xs:element name="reported_peptide_annotation_sort_order">
 		<xs:annotation>
 			<xs:documentation>The sort order applied to filterable peptide annotations when presenting the default listing of peptides. The order will be in the order the annotations appear here. E.g. if "q-value" is listed first and "p-value" is listed next, the peptides will be sorted on q-value first, then, sorted on p-value in the case of ties. Note: all annotation types listed here must be filterable. If this element is not present, no default sorting will be applied to listed peptides.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_annotation" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="matched_protein_annotation_sort_order">
+		<xs:annotation>
+			<xs:documentation>The sort order applied to filterable protein annotations when presenting the default listing of peptides. Proteins will be ordered according to the scores listed  here, in the order they are listed here. E.g. if "q-value" is listed first and "p-value" is listed next, the proteins will be sorted on q-value first, then, sorted on p-value in the case of ties. Note: all annotation types listed here must be filterable. If this element is not present, no default sorting will be applied to listed proteins.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
