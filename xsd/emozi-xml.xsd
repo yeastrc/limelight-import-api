@@ -1142,17 +1142,17 @@
 						<xs:documentation>A quantitation annotation for this result.</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:attribute name="search_program">
+						<xs:attribute name="search_program" use="required">
 							<xs:annotation>
 								<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
-						<xs:attribute name="annotation_name">
+						<xs:attribute name="annotation_name" use="required">
 							<xs:annotation>
 								<xs:documentation>The name of the quantiation annotation type (e.g., "NSAF"). Must be found in the possible score types for the above search program</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
-						<xs:attribute name="value">
+						<xs:attribute name="value" use="required">
 							<xs:annotation>
 								<xs:documentation>The value of this quantiation annotation. E.g., a z-score, area under the curve, and so on.</xs:documentation>
 							</xs:annotation>
