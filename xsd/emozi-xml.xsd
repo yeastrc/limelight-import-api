@@ -1066,41 +1066,6 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="matched_protein_groups">
-		<xs:annotation>
-			<xs:documentation>The indistringuishable protein groups resulting from a protein inference algorithm. A protein group is a group of proteins all exclusively identified by the same list of 1 or more peptides.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="protein_group" maxOccurs="unbounded">
-					<xs:annotation>
-						<xs:documentation>A group of 1 or more proteins that was exclusively identified by the same list of peptides. </xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="matched_protein_ref" maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>A protein sequence contained in this protein group. This is reference to a matched protein sequence (see matched_proteins element).</xs:documentation>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:attribute name="unique_id" type="xs:string" use="required">
-										<xs:annotation>
-											<xs:documentation>A string that uniquely identifies a matched protein sequence (see matched_proteins element).</xs:documentation>
-										</xs:annotation>
-									</xs:attribute>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-						<xs:attribute name="unique_id" type="xs:string" use="required">
-							<xs:annotation>
-								<xs:documentation>A string that uniquely identifies this protein group. Must be unique among protein group unique_ids. This is used to list which protein groups are associated with which peptides.</xs:documentation>
-							</xs:annotation>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
 	<xs:element name="matched_protein_refs">
 		<xs:annotation>
 			<xs:documentation>If protein inference was performed, this is the list of references to protein sequences to which this peptide was matched.</xs:documentation>
