@@ -19,11 +19,6 @@
 						<xs:documentation>Contains the protein sequences matched by peptides found in the experiment, and associated names, descriptions, and taxonomy IDs for those proteins. This will typically come from the FASTA file used to search the data. Only the proteins matched by the data should be included, not all the proteins in the FASTA file.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element ref="matched_protein_groups" minOccurs="0">
-					<xs:annotation>
-						<xs:documentation>Only required if protein inference was performed. The indistringuishable protein groups resulting from a protein inference algorithm. A protein group is a group of proteins all exclusively identified by the same list of 1 or more peptides.</xs:documentation>
-					</xs:annotation>
-				</xs:element>
 				<xs:element ref="static_modifications" minOccurs="0"/>
 				<xs:element ref="decoy_labels" minOccurs="0">
 					<xs:annotation>
@@ -168,7 +163,7 @@
 					</xs:unique>
 				</xs:element>
 				<xs:element ref="modifications" minOccurs="0"/>
-				<xs:element ref="matched_protein_group_refs" minOccurs="0"/>
+				<xs:element ref="matched_protein_refs" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="reported_peptide_string" type="xs:string" use="required">
 				<xs:annotation>
@@ -1106,20 +1101,20 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="matched_protein_group_refs">
+	<xs:element name="matched_protein_refs">
 		<xs:annotation>
-			<xs:documentation>If protein inference was performed, this is the list of protein groups to which this peptide was matched.</xs:documentation>
+			<xs:documentation>If protein inference was performed, this is the list of references to protein sequences to which this peptide was matched.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="matched_protein_group_ref" maxOccurs="unbounded">
+				<xs:element name="matched_protein_ref" maxOccurs="unbounded">
 					<xs:annotation>
-						<xs:documentation>A protein group to which this peptide was matched.</xs:documentation>
+						<xs:documentation>A references to a protein sequence to which this peptide was matched.</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
 						<xs:attribute name="unique_id" type="xs:string" use="required">
 							<xs:annotation>
-								<xs:documentation>The unique id of the protein group to which this peptide was matched. See the matched_protein_groups element for more information.</xs:documentation>
+								<xs:documentation>The unique id of the matched protein sequence to which this peptide was matched. See the matched_proteins element for more information.</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
 					</xs:complexType>
