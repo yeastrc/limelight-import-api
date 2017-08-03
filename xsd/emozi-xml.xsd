@@ -1103,7 +1103,7 @@
 					<xs:complexType>
 						<xs:attribute name="unique_id" type="xs:string" use="required">
 							<xs:annotation>
-								<xs:documentation>The unique id of the matched protein sequence to which this peptide was matched. See the matched_proteins element for more information.</xs:documentation>
+								<xs:documentation>The unique id of the matched protein sequence to which this peptide was matched. This is not necessarily the name of the protein, as multiple proteins may have the same sequence. See the matched_proteins element for more information.</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
 					</xs:complexType>
