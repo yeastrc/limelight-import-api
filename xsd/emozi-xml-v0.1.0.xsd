@@ -20,11 +20,6 @@
 					</xs:annotation>
 				</xs:element>
 				<xs:element ref="static_modifications" minOccurs="0"/>
-				<xs:element ref="decoy_labels" minOccurs="0">
-					<xs:annotation>
-						<xs:documentation>An optional list of decoy labels (strings that are prefixes on protein names that indicate the given protein is a decoy (e.g., "DECOY_") </xs:documentation>
-					</xs:annotation>
-				</xs:element>
 				<xs:element ref="configuration_files" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>(Optional) The configuration files associated with the search.</xs:documentation>
@@ -876,29 +871,6 @@
 			<xs:selector xpath="static_modification"/>
 			<xs:field xpath="@amino_acid"/>
 		</xs:unique>
-	</xs:element>
-	<xs:element name="decoy_labels">
-		<xs:annotation>
-			<xs:documentation>A list of decoy labels (strings that are prefixes on protein names that indicate the given protein is a decoy (e.g., "DECOY_")</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="decoy_label" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-	<xs:element name="decoy_label">
-		<xs:annotation>
-			<xs:documentation>A decoy label is used to identify a protein to which a peptide is matched during protein inference as a decoy protein (used to calculate FDR statistics). Matches to decoy proteins will be ignored and not inserted into the database as a matched protein for peptides. Example: <decoy_label prefix="DECOY_"/>
-			</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:attribute name="prefix" type="xs:string">
-				<xs:annotation>
-					<xs:documentation>Any protein name beginning with the supplied string will be considered a decoy protein and ignored.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-		</xs:complexType>
 	</xs:element>
 	<xs:element name="search_program_info">
 		<xs:annotation>
