@@ -173,6 +173,7 @@
 					</xs:unique>
 				</xs:element>
 				<xs:element ref="modifications" minOccurs="0"/>
+				<xs:element ref="peptide_isotope_labels" minOccurs="0"/>
 				<xs:element ref="matched_protein_refs" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="reported_peptide_string" type="xs:string" use="required">
@@ -430,6 +431,28 @@
 			<xs:attribute name="position" type="peptide_position" use="required">
 				<xs:annotation>
 					<xs:documentation>The position in the peptide (starting at 1) of the modification.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="peptide_isotope_labels">
+		<xs:annotation>
+			<xs:documentation>If this peptide is isotopically labelled, this element contains the label present on the peptide.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="peptide_isotope_label" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="peptide_isotope_label">
+		<xs:annotation>
+			<xs:documentation>The isotope label for for this peptide. </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="label" use="required">
+				<xs:annotation>
+					<xs:documentation>The isotope label. Should be one of: 13C, 15N, 18O, or 2H</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>

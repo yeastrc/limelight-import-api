@@ -8,8 +8,6 @@
 
 package org.yeastrc.emozi.emozi_import.api.xml_dto;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -27,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}psm" maxOccurs="unbounded"/>
+ *         &lt;element ref="{}peptide_isotope_label" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,41 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "psm"
+    "peptideIsotopeLabel"
 })
-@XmlRootElement(name = "psms")
-public class Psms {
+@XmlRootElement(name = "peptide_isotope_labels")
+public class PeptideIsotopeLabels {
 
-    @XmlElement(required = true)
-    protected List<Psm> psm;
+    @XmlElement(name = "peptide_isotope_label")
+    protected PeptideIsotopeLabel peptideIsotopeLabel;
 
     /**
-     * Gets the value of the psm property.
+     * Gets the value of the peptideIsotopeLabel property.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the psm property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getPsm().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Psm }
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link PeptideIsotopeLabel }
+     *     
      */
-    public List<Psm> getPsm() {
-        if (psm == null) {
-            psm = new ArrayList<Psm>();
-        }
-        return this.psm;
+    public PeptideIsotopeLabel getPeptideIsotopeLabel() {
+        return peptideIsotopeLabel;
+    }
+
+    /**
+     * Sets the value of the peptideIsotopeLabel property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link PeptideIsotopeLabel }
+     *     
+     */
+    public void setPeptideIsotopeLabel(PeptideIsotopeLabel value) {
+        this.peptideIsotopeLabel = value;
     }
 
 }
