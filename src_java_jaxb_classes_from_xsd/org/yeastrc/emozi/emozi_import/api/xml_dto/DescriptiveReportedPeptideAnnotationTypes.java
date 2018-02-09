@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}search_annotation" maxOccurs="unbounded"/>
+ *         &lt;element ref="{}descriptive_reported_peptide_annotation_type" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,41 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "searchAnnotation"
+    "descriptiveReportedPeptideAnnotationType"
 })
-@XmlRootElement(name = "visible_reported_peptide_annotations")
-public class VisibleReportedPeptideAnnotations {
+@XmlRootElement(name = "descriptive_reported_peptide_annotation_types")
+public class DescriptiveReportedPeptideAnnotationTypes {
 
-    @XmlElement(name = "search_annotation", required = true)
-    protected List<SearchAnnotation> searchAnnotation;
+    @XmlElement(name = "descriptive_reported_peptide_annotation_type", required = true)
+    protected List<DescriptiveReportedPeptideAnnotationType> descriptiveReportedPeptideAnnotationType;
 
     /**
-     * Gets the value of the searchAnnotation property.
+     * An annotation of any type (numeric or string) that is not meant to be used as a possible filter for filtering out peptides based on quality of matches. Examples include calculated mass or validation status.Gets the value of the descriptiveReportedPeptideAnnotationType property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the searchAnnotation property.
+     * This is why there is not a <CODE>set</CODE> method for the descriptiveReportedPeptideAnnotationType property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getSearchAnnotation().add(newItem);
+     *    getDescriptiveReportedPeptideAnnotationType().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link SearchAnnotation }
+     * {@link DescriptiveReportedPeptideAnnotationType }
      * 
      * 
      */
-    public List<SearchAnnotation> getSearchAnnotation() {
-        if (searchAnnotation == null) {
-            searchAnnotation = new ArrayList<SearchAnnotation>();
+    public List<DescriptiveReportedPeptideAnnotationType> getDescriptiveReportedPeptideAnnotationType() {
+        if (descriptiveReportedPeptideAnnotationType == null) {
+            descriptiveReportedPeptideAnnotationType = new ArrayList<DescriptiveReportedPeptideAnnotationType>();
         }
-        return this.searchAnnotation;
+        return this.descriptiveReportedPeptideAnnotationType;
     }
 
 }

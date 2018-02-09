@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}search_annotation" maxOccurs="unbounded"/>
+ *         &lt;element ref="{}filterable_matched_protein_annotation_type" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,41 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "searchAnnotation"
+    "filterableMatchedProteinAnnotationType"
 })
-@XmlRootElement(name = "visible_reported_peptide_annotations")
-public class VisibleReportedPeptideAnnotations {
+@XmlRootElement(name = "filterable_matched_protein_annotation_types")
+public class FilterableMatchedProteinAnnotationTypes {
 
-    @XmlElement(name = "search_annotation", required = true)
-    protected List<SearchAnnotation> searchAnnotation;
+    @XmlElement(name = "filterable_matched_protein_annotation_type", required = true)
+    protected List<FilterableMatchedProteinAnnotationType> filterableMatchedProteinAnnotationType;
 
     /**
-     * Gets the value of the searchAnnotation property.
+     * Gets the value of the filterableMatchedProteinAnnotationType property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the searchAnnotation property.
+     * This is why there is not a <CODE>set</CODE> method for the filterableMatchedProteinAnnotationType property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getSearchAnnotation().add(newItem);
+     *    getFilterableMatchedProteinAnnotationType().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link SearchAnnotation }
+     * {@link FilterableMatchedProteinAnnotationType }
      * 
      * 
      */
-    public List<SearchAnnotation> getSearchAnnotation() {
-        if (searchAnnotation == null) {
-            searchAnnotation = new ArrayList<SearchAnnotation>();
+    public List<FilterableMatchedProteinAnnotationType> getFilterableMatchedProteinAnnotationType() {
+        if (filterableMatchedProteinAnnotationType == null) {
+            filterableMatchedProteinAnnotationType = new ArrayList<FilterableMatchedProteinAnnotationType>();
         }
-        return this.searchAnnotation;
+        return this.filterableMatchedProteinAnnotationType;
     }
 
 }

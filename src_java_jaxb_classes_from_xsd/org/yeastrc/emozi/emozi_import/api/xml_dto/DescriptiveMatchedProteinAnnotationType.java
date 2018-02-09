@@ -8,7 +8,6 @@
 
 package org.yeastrc.emozi.emozi_import.api.xml_dto;
 
-import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -25,14 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="amino_acid" use="required">
- *         &lt;simpleType>
- *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *             &lt;length value="1"/>
- *           &lt;/restriction>
- *         &lt;/simpleType>
- *       &lt;/attribute>
- *       &lt;attribute name="mass_change" use="required" type="{}mass" />
+ *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="description" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -42,60 +35,60 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = "static_modification")
-public class StaticModification {
+@XmlRootElement(name = "descriptive_matched_protein_annotation_type")
+public class DescriptiveMatchedProteinAnnotationType {
 
-    @XmlAttribute(name = "amino_acid", required = true)
-    protected String aminoAcid;
-    @XmlAttribute(name = "mass_change", required = true)
-    protected BigDecimal massChange;
+    @XmlAttribute(name = "name", required = true)
+    protected String name;
+    @XmlAttribute(name = "description")
+    protected String description;
 
     /**
-     * Gets the value of the aminoAcid property.
+     * Gets the value of the name property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getAminoAcid() {
-        return aminoAcid;
+    public String getName() {
+        return name;
     }
 
     /**
-     * Sets the value of the aminoAcid property.
+     * Sets the value of the name property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setAminoAcid(String value) {
-        this.aminoAcid = value;
+    public void setName(String value) {
+        this.name = value;
     }
 
     /**
-     * Gets the value of the massChange property.
+     * Gets the value of the description property.
      * 
      * @return
      *     possible object is
-     *     {@link BigDecimal }
+     *     {@link String }
      *     
      */
-    public BigDecimal getMassChange() {
-        return massChange;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Sets the value of the massChange property.
+     * Sets the value of the description property.
      * 
      * @param value
      *     allowed object is
-     *     {@link BigDecimal }
+     *     {@link String }
      *     
      */
-    public void setMassChange(BigDecimal value) {
-        this.massChange = value;
+    public void setDescription(String value) {
+        this.description = value;
     }
 
 }
