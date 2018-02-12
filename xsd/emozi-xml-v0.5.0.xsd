@@ -760,6 +760,11 @@
 					</xs:annotation>
 				</xs:element>
 			</xs:sequence>
+			<xs:attribute name="precursor_charge" type="xs:positiveInteger" use="required">
+				<xs:annotation>
+					<xs:documentation>The predicted charge of the precursor ion. Used for accurately annotating spectra in web interface.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 			<xs:attribute name="scan_file_name" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>(Optional) The filename of the file in which this scan may be found. Will be used to locate the spectrum associated with this PSM when data are uploaded.</xs:documentation>
@@ -768,11 +773,6 @@
 			<xs:attribute name="scan_number" type="xs:positiveInteger">
 				<xs:annotation>
 					<xs:documentation>(Optional) The scan number used to look up the scan in the given file. Will be used to locate the spectrum associated with this PSM when data are uploaded.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="precursor_charge" type="xs:positiveInteger">
-				<xs:annotation>
-					<xs:documentation>(Optional) The predicted charge of the precursor ion. Used for accurately annotating spectra in web interface.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>

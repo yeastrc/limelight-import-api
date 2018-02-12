@@ -9,6 +9,6 @@
 xjc \
   -d ../src_java_jaxb_classes_from_xsd \
   -p org.yeastrc.emozi.emozi_import.api.xml_dto  \
-  ../xsd/emozi-xml-v0.4.0.xsd
+  ../xsd/emozi-xml-v0.5.0.xsd
 
 
