@@ -8,7 +8,7 @@
 
 package org.yeastrc.emozi.emozi_import.api.xml_dto;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -27,9 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="description" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="filter_direction" use="required" type="{}filter_direction_type" />
- *       &lt;attribute name="default_filter" type="{http://www.w3.org/2001/XMLSchema}boolean" />
- *       &lt;attribute name="default_filter_value" type="{http://www.w3.org/2001/XMLSchema}decimal" />
+ *       &lt;attribute name="ncbi-taxonomy-id" type="{http://www.w3.org/2001/XMLSchema}integer" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -39,19 +37,15 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = "filterable_psm_annotation_type")
-public class FilterablePsmAnnotationType {
+@XmlRootElement(name = "matched_protein_label")
+public class MatchedProteinLabel {
 
     @XmlAttribute(name = "name", required = true)
     protected String name;
     @XmlAttribute(name = "description")
     protected String description;
-    @XmlAttribute(name = "filter_direction", required = true)
-    protected FilterDirectionType filterDirection;
-    @XmlAttribute(name = "default_filter")
-    protected Boolean defaultFilter;
-    @XmlAttribute(name = "default_filter_value")
-    protected BigDecimal defaultFilterValue;
+    @XmlAttribute(name = "ncbi-taxonomy-id")
+    protected BigInteger ncbiTaxonomyId;
 
     /**
      * Gets the value of the name property.
@@ -102,75 +96,27 @@ public class FilterablePsmAnnotationType {
     }
 
     /**
-     * Gets the value of the filterDirection property.
+     * Gets the value of the ncbiTaxonomyId property.
      * 
      * @return
      *     possible object is
-     *     {@link FilterDirectionType }
+     *     {@link BigInteger }
      *     
      */
-    public FilterDirectionType getFilterDirection() {
-        return filterDirection;
+    public BigInteger getNcbiTaxonomyId() {
+        return ncbiTaxonomyId;
     }
 
     /**
-     * Sets the value of the filterDirection property.
+     * Sets the value of the ncbiTaxonomyId property.
      * 
      * @param value
      *     allowed object is
-     *     {@link FilterDirectionType }
+     *     {@link BigInteger }
      *     
      */
-    public void setFilterDirection(FilterDirectionType value) {
-        this.filterDirection = value;
-    }
-
-    /**
-     * Gets the value of the defaultFilter property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isDefaultFilter() {
-        return defaultFilter;
-    }
-
-    /**
-     * Sets the value of the defaultFilter property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setDefaultFilter(Boolean value) {
-        this.defaultFilter = value;
-    }
-
-    /**
-     * Gets the value of the defaultFilterValue property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public BigDecimal getDefaultFilterValue() {
-        return defaultFilterValue;
-    }
-
-    /**
-     * Sets the value of the defaultFilterValue property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public void setDefaultFilterValue(BigDecimal value) {
-        this.defaultFilterValue = value;
+    public void setNcbiTaxonomyId(BigInteger value) {
+        this.ncbiTaxonomyId = value;
     }
 
 }
