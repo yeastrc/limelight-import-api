@@ -404,7 +404,7 @@
 					<xs:documentation>The position in the peptide (starting at 1) of the modification.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="predicted">
+			<xs:attribute name="predicted" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>If this attribute exists and is set to "true", this means this modification was the prediction of a unknown modification prediction program, such as msfragger or magnum--as opposed to being specified as a dynamic/variable modification that was specifically searched for.</xs:documentation>
 				</xs:annotation>
