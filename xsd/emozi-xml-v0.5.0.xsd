@@ -25,6 +25,7 @@
 						<xs:documentation>(Optional) The configuration files associated with the search.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
+				<xs:element ref="conversion_program" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="fasta_filename" type="xs:string" use="required">
 				<xs:annotation>
@@ -1017,5 +1018,37 @@
 		<xs:annotation>
 			<xs:documentation>This is the list of references to protein groups to which this peptide was matched.</xs:documentation>
 		</xs:annotation>
+	</xs:element>
+	<xs:element name="conversion_program">
+		<xs:annotation>
+			<xs:documentation>Information about the program run to create this emozi XML document.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the program.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="version" use="required">
+				<xs:annotation>
+					<xs:documentation>The version of the program.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="conversion_date" type="xs:dateTime" use="required">
+				<xs:annotation>
+					<xs:documentation>The datetime the conversion was run. E.g.: 2018-05-30T09:21:32</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="arguments">
+				<xs:annotation>
+					<xs:documentation>The arguments passed to the conversion program.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="URI">
+				<xs:annotation>
+					<xs:documentation>A URI/URL with more information about the conversion program.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
 	</xs:element>
 </xs:schema>
