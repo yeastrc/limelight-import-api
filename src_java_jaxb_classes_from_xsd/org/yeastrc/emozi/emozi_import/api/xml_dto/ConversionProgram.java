@@ -8,12 +8,13 @@
 
 package org.yeastrc.emozi.emozi_import.api.xml_dto;
 
-import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -25,11 +26,11 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="description" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="filter_direction" use="required" type="{}filter_direction_type" />
- *       &lt;attribute name="default_filter" type="{http://www.w3.org/2001/XMLSchema}boolean" />
- *       &lt;attribute name="default_filter_value" type="{http://www.w3.org/2001/XMLSchema}decimal" />
+ *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
+ *       &lt;attribute name="version" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
+ *       &lt;attribute name="conversion_date" use="required" type="{http://www.w3.org/2001/XMLSchema}dateTime" />
+ *       &lt;attribute name="arguments" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
+ *       &lt;attribute name="URI" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -39,19 +40,24 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = "filterable_reported_peptide_annotation_type")
-public class FilterableReportedPeptideAnnotationType {
+@XmlRootElement(name = "conversion_program")
+public class ConversionProgram {
 
     @XmlAttribute(name = "name", required = true)
+    @XmlSchemaType(name = "anySimpleType")
     protected String name;
-    @XmlAttribute(name = "description")
-    protected String description;
-    @XmlAttribute(name = "filter_direction", required = true)
-    protected FilterDirectionType filterDirection;
-    @XmlAttribute(name = "default_filter")
-    protected Boolean defaultFilter;
-    @XmlAttribute(name = "default_filter_value")
-    protected BigDecimal defaultFilterValue;
+    @XmlAttribute(name = "version", required = true)
+    @XmlSchemaType(name = "anySimpleType")
+    protected String version;
+    @XmlAttribute(name = "conversion_date", required = true)
+    @XmlSchemaType(name = "dateTime")
+    protected XMLGregorianCalendar conversionDate;
+    @XmlAttribute(name = "arguments")
+    @XmlSchemaType(name = "anySimpleType")
+    protected String arguments;
+    @XmlAttribute(name = "URI")
+    @XmlSchemaType(name = "anySimpleType")
+    protected String uri;
 
     /**
      * Gets the value of the name property.
@@ -78,99 +84,99 @@ public class FilterableReportedPeptideAnnotationType {
     }
 
     /**
-     * Gets the value of the description property.
+     * Gets the value of the version property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getDescription() {
-        return description;
+    public String getVersion() {
+        return version;
     }
 
     /**
-     * Sets the value of the description property.
+     * Sets the value of the version property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setDescription(String value) {
-        this.description = value;
+    public void setVersion(String value) {
+        this.version = value;
     }
 
     /**
-     * Gets the value of the filterDirection property.
+     * Gets the value of the conversionDate property.
      * 
      * @return
      *     possible object is
-     *     {@link FilterDirectionType }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public FilterDirectionType getFilterDirection() {
-        return filterDirection;
+    public XMLGregorianCalendar getConversionDate() {
+        return conversionDate;
     }
 
     /**
-     * Sets the value of the filterDirection property.
+     * Sets the value of the conversionDate property.
      * 
      * @param value
      *     allowed object is
-     *     {@link FilterDirectionType }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setFilterDirection(FilterDirectionType value) {
-        this.filterDirection = value;
+    public void setConversionDate(XMLGregorianCalendar value) {
+        this.conversionDate = value;
     }
 
     /**
-     * Gets the value of the defaultFilter property.
+     * Gets the value of the arguments property.
      * 
      * @return
      *     possible object is
-     *     {@link Boolean }
+     *     {@link String }
      *     
      */
-    public Boolean isDefaultFilter() {
-        return defaultFilter;
+    public String getArguments() {
+        return arguments;
     }
 
     /**
-     * Sets the value of the defaultFilter property.
+     * Sets the value of the arguments property.
      * 
      * @param value
      *     allowed object is
-     *     {@link Boolean }
+     *     {@link String }
      *     
      */
-    public void setDefaultFilter(Boolean value) {
-        this.defaultFilter = value;
+    public void setArguments(String value) {
+        this.arguments = value;
     }
 
     /**
-     * Gets the value of the defaultFilterValue property.
+     * Gets the value of the uri property.
      * 
      * @return
      *     possible object is
-     *     {@link BigDecimal }
+     *     {@link String }
      *     
      */
-    public BigDecimal getDefaultFilterValue() {
-        return defaultFilterValue;
+    public String getURI() {
+        return uri;
     }
 
     /**
-     * Sets the value of the defaultFilterValue property.
+     * Sets the value of the uri property.
      * 
      * @param value
      *     allowed object is
-     *     {@link BigDecimal }
+     *     {@link String }
      *     
      */
-    public void setDefaultFilterValue(BigDecimal value) {
-        this.defaultFilterValue = value;
+    public void setURI(String value) {
+        this.uri = value;
     }
 
 }
