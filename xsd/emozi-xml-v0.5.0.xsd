@@ -756,19 +756,19 @@
 					</xs:annotation>
 				</xs:element>
 			</xs:sequence>
+			<xs:attribute name="scan_number" type="xs:positiveInteger" use="required">
+				<xs:annotation>
+					<xs:documentation>The scan number used to look up the scan in the given file. Will be used to locate the spectrum associated with this PSM when data are uploaded.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 			<xs:attribute name="precursor_charge" type="xs:positiveInteger" use="required">
 				<xs:annotation>
 					<xs:documentation>The predicted charge of the precursor ion. Used for accurately annotating spectra in web interface.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="precursor_mz" use="required">
+			<xs:attribute name="precursor_mz">
 				<xs:annotation>
 					<xs:documentation>The m/z of the precusor ion for this PSM.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="scan_number" type="xs:positiveInteger" use="required">
-				<xs:annotation>
-					<xs:documentation>The scan number used to look up the scan in the given file. Will be used to locate the spectrum associated with this PSM when data are uploaded.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 			<xs:attribute name="scan_file_name" type="xs:string">
