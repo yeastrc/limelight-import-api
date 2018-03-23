@@ -453,14 +453,9 @@
 					<xs:documentation>The direction a filterable annotation type is sorted in.  If set to "below", attributes with lower values are considered more significant (such as in the case of p-values). If set to "above", attributes with higher values are considered more significant (such as in the case of XCorr).</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="default_filter" type="xs:boolean">
-				<xs:annotation>
-					<xs:documentation>If present, and if set to true, this score will be used as a default PSM-level filter when viewing data. Use sparingly.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
 			<xs:attribute name="default_filter_value" type="xs:decimal">
 				<xs:annotation>
-					<xs:documentation>This is the default cutoff value for this score when filtering data. If default_filter is set to true, this value must be set.</xs:documentation>
+					<xs:documentation>If present, the data will be filtered by default in emozi using this annotation type and this value. For example, if this annotation type is FDR or q-value, a default_filter_value might be 0.01 if the data are to be filtered by default on a q-value of 0.01.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
@@ -485,14 +480,9 @@
 					<xs:documentation>The direction a filterable annotation type is sorted in.  If set to "below", attributes with lower values are considered more significant (such as in the case of p-values). If set to "above", attributes with higher values are considered more significant (such as in the case of XCorr).</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="default_filter" type="xs:boolean">
-				<xs:annotation>
-					<xs:documentation>If present, and if set to true, this score will be used as a default peptide-level filter when viewing data. Use sparingly.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
 			<xs:attribute name="default_filter_value" type="xs:decimal">
 				<xs:annotation>
-					<xs:documentation>This is the default cutoff value for this score when filtering data. If default_filter is set to true, this value must be set.</xs:documentation>
+					<xs:documentation>If present, the data will be filtered by default in emozi using this annotation type and this value. For example, if this annotation type is FDR or q-value, a default_filter_value might be 0.01 if the data are to be filtered by default on a q-value of 0.01.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
@@ -517,14 +507,9 @@
 					<xs:documentation>The direction a filterable annotation type is sorted in.  If set to "below", attributes with lower values are considered more significant (such as in the case of p-values). If set to "above", attributes with higher values are considered more significant (such as in the case of XCorr).</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="default_filter" type="xs:boolean">
-				<xs:annotation>
-					<xs:documentation>If present, and if set to true, this score will be used as a default peptide-level filter when viewing data. Use sparingly.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
 			<xs:attribute name="default_filter_value" type="xs:decimal">
 				<xs:annotation>
-					<xs:documentation>This is the default cutoff value for this score when filtering data. If default_filter is set to true, this value must be set.</xs:documentation>
+					<xs:documentation>If present, the data will be filtered by default in emozi using this annotation type and this value. For example, if this annotation type is FDR or q-value, a default_filter_value might be 0.01 if the data are to be filtered by default on a q-value of 0.01.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
