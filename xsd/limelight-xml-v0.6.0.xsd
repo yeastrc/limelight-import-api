@@ -158,7 +158,11 @@
 						<xs:field xpath="@annotation_name"/>
 					</xs:unique>
 				</xs:element>
-				<xs:element ref="modifications" minOccurs="0"/>
+				<xs:element ref="peptide_modifications" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The peptide-level modifications for this reported peptide. E.g., if phosphorylation was searched for, store those modifcations here. Do not list static / fixed modifications (e.g. 57 on C)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
 				<xs:element ref="peptide_isotope_labels" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="reported_peptide_string" type="xs:string" use="required">
@@ -379,17 +383,35 @@
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="modifications">
+	<xs:element name="psm_modifications">
 		<xs:annotation>
 			<xs:documentation>The modifications identified for a peptide.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="modification" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="psm_modification" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>A mass modification of a residue. E.g., a PTM Do not list static / fixed modifications (e.g. 57 on C)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="modification">
+	<xs:element name="peptide_modifications">
+		<xs:annotation>
+			<xs:documentation>The modifications identified for a peptide.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="peptide_modification" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>A mass modification of a residue. E.g., a PTM Do not list static / fixed modifications (e.g. 57 on C)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="psm_modification">
 		<xs:annotation>
 			<xs:documentation>A mass modification of a residue. E.g., a PTM</xs:documentation>
 		</xs:annotation>
@@ -404,9 +426,26 @@
 					<xs:documentation>The position in the peptide (starting at 1) of the modification.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="predicted" type="xs:boolean">
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="peptide_modification">
+		<xs:annotation>
+			<xs:documentation>A mass modification of a residue. E.g., a PTM</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="mass" type="mass" use="required">
 				<xs:annotation>
-					<xs:documentation>If this attribute exists and is set to "true", this means this modification was the prediction of a unknown modification prediction program, such as msfragger or magnum--as opposed to being specified as a dynamic/variable modification that was specifically searched for.</xs:documentation>
+					<xs:documentation>The mass of the modification.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="position" type="peptide_position" use="required">
+				<xs:annotation>
+					<xs:documentation>The position in the peptide (starting at 1) of the modification.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="have_psm_level_data">
+				<xs:annotation>
+					<xs:documentation>Not common. Set to true if PSM-level modification masses are available. In the case of open mod searches, each PSM may have a slightly different  observed modification mass. These specific values may be aggregated into an umbrella value that is reported as the peptide-level modification mass--so that all of those PSMs may be considered as having identified the same peptide.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
@@ -738,6 +777,11 @@
 				<xs:element ref="descriptive_psm_annotations" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>The descriptive annotations (numeric or string) assigned to the peptide spectrum match (PSM) that are not meant to describe the quality of the match or filter out poor matches.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="psm_modifications" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Not common. If there are PSM-level variable / dynamic modification data (ie, each PSM has a distinct mass for the observed modification), such as in the case of open mod searches, store those data here. Do not list static / fixed modifications (e.g. 57 on C)</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 			</xs:sequence>
