@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import org.yeastrc.limelight.limelight_import.api.xml_dto.limelightInput;
+import org.yeastrc.limelight.limelight_import.api.xml_dto.LimelightInput;
 
 
 /**
@@ -31,7 +31,7 @@ public class CreateImportFileFromJavaObjectsMain {
 	 * @param proxlInput
 	 * @throws Exception
 	 */
-	public void createImportFileFromJavaObjectsMain( File outputFile, limelightInput limelightInput ) throws Exception {
+	public void createImportFileFromJavaObjectsMain( File outputFile, LimelightInput limelightInput ) throws Exception {
 		
 
 		OutputStream outputStream = null;
@@ -57,9 +57,9 @@ public class CreateImportFileFromJavaObjectsMain {
 	 * @param proxlInput
 	 * @throws Exception
 	 */
-	public void createImportFileFromJavaObjectsMain( OutputStream outputStream, limelightInput limelightInput ) throws Exception {
+	public void createImportFileFromJavaObjectsMain( OutputStream outputStream, LimelightInput limelightInput ) throws Exception {
 		
-		JAXBContext jaxbContext = JAXBContext.newInstance( limelightInput.class );
+		JAXBContext jaxbContext = JAXBContext.newInstance( LimelightInput.class );
 
 		Marshaller marshaller = jaxbContext.createMarshaller();
 
