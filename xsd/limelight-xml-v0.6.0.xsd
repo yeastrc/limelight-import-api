@@ -443,7 +443,7 @@
 					<xs:documentation>The position in the peptide (starting at 1) of the modification.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="have_psm_level_data">
+			<xs:attribute name="have_psm_level_data" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>Not common. Set to true if PSM-level modification masses are available. In the case of open mod searches, each PSM may have a slightly different  observed modification mass. These specific values may be aggregated into an umbrella value that is reported as the peptide-level modification mass--so that all of those PSMs may be considered as having identified the same peptide.</xs:documentation>
 				</xs:annotation>
