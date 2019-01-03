@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element ref="{}search_annotation" maxOccurs="unbounded"/>
+ *       &lt;sequence minOccurs="0">
+ *         &lt;element name="search_comment" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,41 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "searchAnnotation"
+    "searchComment"
 })
-@XmlRootElement(name = "psm_annotation_sort_order")
-public class PsmAnnotationSortOrder {
+@XmlRootElement(name = "search_comments")
+public class SearchComments {
 
-    @XmlElement(name = "search_annotation", required = true)
-    protected List<SearchAnnotation> searchAnnotation;
+    @XmlElement(name = "search_comment")
+    protected List<String> searchComment;
 
     /**
-     * Gets the value of the searchAnnotation property.
+     * Gets the value of the searchComment property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the searchAnnotation property.
+     * This is why there is not a <CODE>set</CODE> method for the searchComment property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getSearchAnnotation().add(newItem);
+     *    getSearchComment().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link SearchAnnotation }
+     * {@link String }
      * 
      * 
      */
-    public List<SearchAnnotation> getSearchAnnotation() {
-        if (searchAnnotation == null) {
-            searchAnnotation = new ArrayList<SearchAnnotation>();
+    public List<String> getSearchComment() {
+        if (searchComment == null) {
+            searchComment = new ArrayList<String>();
         }
-        return this.searchAnnotation;
+        return this.searchComment;
     }
 
 }
