@@ -426,16 +426,6 @@
 					<xs:documentation>The position in the peptide (starting at 1) of the modification.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="is_n_terminal" type="xs:boolean">
-				<xs:annotation>
-					<xs:documentation>Optional. If set to true, this peptide will only be mapped to proteins where the modification is at the protein n-terminus. Note that position must be 1 or this peptide will match no proteins.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="is_c_terminal" type="xs:boolean">
-				<xs:annotation>
-					<xs:documentation>Optional. If set to true, this peptide will only be mapped to proteins where the modification is at the protein c-terminus. Note that position must be the final position in the peptide, or the peptide will match no protein.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="peptide_modification">
@@ -796,7 +786,7 @@
 				</xs:element>
 				<xs:element ref="psm_modifications" minOccurs="0">
 					<xs:annotation>
-						<xs:documentation>Not common. If there are PSM-level variable / dynamic modification data (ie, each PSM has a distinct mass for the observed modification), such as in the case of open mod searches, store those data here. Do not list static / fixed modifications (e.g. 57 on C)</xs:documentation>
+						<xs:documentation>Not common. If there are PSM-level variable / dynamic modification data (ie, each PSM has a distinct mass for the observed modification), such as in the case of open mod searches, store those data here. Do not list static / fixed modifications (e.g. 57 on C)  NOTE: If PSM modifications are defined: All PSMs needs to have a psm_modifications section with its own mass defined for the given position. And, these positions must match one or more of the positions defined for modifications the peptide level.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 			</xs:sequence>
