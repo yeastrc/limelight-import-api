@@ -8,6 +8,11 @@
 		<!-- Element name must match string in Java class XSD_ElementAttributeNamesConstants  -->
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element ref="search_comments" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Comments to be associated with this search. Each search_comment is added to database as a separate comment.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
 				<xs:element ref="search_program_info"/>
 				<xs:element ref="reported_peptides">
 					<xs:annotation>
@@ -26,11 +31,6 @@
 					</xs:annotation>
 				</xs:element>
 				<xs:element ref="conversion_program" minOccurs="0"/>
-				<xs:element ref="search_comments" minOccurs="0">
-					<xs:annotation>
-						<xs:documentation>Comments to be associated with this search. Each search_comment is added to database as a separate comment.</xs:documentation>
-					</xs:annotation>
-				</xs:element>
 			</xs:sequence>
 			<xs:attribute name="fasta_filename" type="xs:string" use="required">
 				<xs:annotation>
