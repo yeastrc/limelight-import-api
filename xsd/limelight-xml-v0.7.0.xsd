@@ -426,6 +426,16 @@
 					<xs:documentation>The position in the peptide (starting at 1) of the modification.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="is_n_terminal" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Optional. If set to true, this peptide will only be mapped to proteins where the modification is at the protein n-terminus. Note that position must be 1 or this peptide will match no proteins.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="is_c_terminal" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Optional. If set to true, this peptide will only be mapped to proteins where the modification is at the protein c-terminus. Note that position must be the final position in the peptide, or the peptide will match no protein.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="peptide_modification">
