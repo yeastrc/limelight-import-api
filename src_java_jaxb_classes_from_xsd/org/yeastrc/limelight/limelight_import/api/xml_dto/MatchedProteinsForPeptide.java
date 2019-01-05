@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}matched_protein" maxOccurs="unbounded"/>
+ *         &lt;element ref="{}matched_protein_for_peptide" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,41 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "matchedProtein"
+    "matchedProteinForPeptide"
 })
-@XmlRootElement(name = "matched_proteins")
-public class MatchedProteins {
+@XmlRootElement(name = "matched_proteins_for_peptide")
+public class MatchedProteinsForPeptide {
 
-    @XmlElement(name = "matched_protein", required = true)
-    protected List<MatchedProtein> matchedProtein;
+    @XmlElement(name = "matched_protein_for_peptide")
+    protected List<MatchedProteinForPeptide> matchedProteinForPeptide;
 
     /**
-     * Gets the value of the matchedProtein property.
+     * Gets the value of the matchedProteinForPeptide property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the matchedProtein property.
+     * This is why there is not a <CODE>set</CODE> method for the matchedProteinForPeptide property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getMatchedProtein().add(newItem);
+     *    getMatchedProteinForPeptide().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link MatchedProtein }
+     * {@link MatchedProteinForPeptide }
      * 
      * 
      */
-    public List<MatchedProtein> getMatchedProtein() {
-        if (matchedProtein == null) {
-            matchedProtein = new ArrayList<MatchedProtein>();
+    public List<MatchedProteinForPeptide> getMatchedProteinForPeptide() {
+        if (matchedProteinForPeptide == null) {
+            matchedProteinForPeptide = new ArrayList<MatchedProteinForPeptide>();
         }
-        return this.matchedProtein;
+        return this.matchedProteinForPeptide;
     }
 
 }
