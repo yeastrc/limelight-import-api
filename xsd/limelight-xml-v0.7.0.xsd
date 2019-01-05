@@ -164,6 +164,7 @@
 					</xs:annotation>
 				</xs:element>
 				<xs:element ref="peptide_isotope_labels" minOccurs="0"/>
+				<xs:element ref="matched_proteins_for_peptide" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="reported_peptide_string" type="xs:string" use="required">
 				<xs:annotation>
@@ -359,6 +360,11 @@
 					<xs:documentation>The amino acid sequence for this protein.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="id" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Optional. A unique id number to use as a reference for this protein sequence in this file. Must be present if matched_proteins_for_peptide is included for peptides (ie, protein inference results are imported).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="matched_protein_label">
@@ -421,9 +427,19 @@
 					<xs:documentation>The mass of the modification.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="position" type="peptide_position" use="required">
+			<xs:attribute name="position" type="peptide_position" use="optional">
 				<xs:annotation>
-					<xs:documentation>The position in the peptide (starting at 1) of the modification.</xs:documentation>
+					<xs:documentation>The position in the peptide (starting at 1) of the modification. If this is an n- or c-terminal mod, omit the position.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="is_n_terminal" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Set this to true if this mod is at the n-terminus of the peptide. Omit if this is not an n-terminal mod.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="is_c_terminal" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Set this to true if this mod is at the c-terminus of the peptide. Omit if this is not a c-terminal mod.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
@@ -438,19 +454,19 @@
 					<xs:documentation>The mass of the modification.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="position" type="peptide_position" use="required">
+			<xs:attribute name="position" type="peptide_position" use="optional">
 				<xs:annotation>
-					<xs:documentation>The position in the peptide (starting at 1) of the modification.</xs:documentation>
+					<xs:documentation>The position in the peptide (starting at 1) of the modification. If this is an n- or c-terminal mod, omit the position.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 			<xs:attribute name="is_n_terminal" type="xs:boolean">
 				<xs:annotation>
-					<xs:documentation>Optional. If set to true, this peptide will only be mapped to proteins where the modification is at the protein n-terminus. Note that position must be 1 or this peptide will match no proteins.</xs:documentation>
+					<xs:documentation>Set this to true if this mod is at the n-terminus of the peptide. Omit if this is not an n-terminal mod.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 			<xs:attribute name="is_c_terminal" type="xs:boolean">
 				<xs:annotation>
-					<xs:documentation>Optional. If set to true, this peptide will only be mapped to proteins where the modification is at the protein c-terminus. Note that position must be the final position in the peptide, or the peptide will match no protein.</xs:documentation>
+					<xs:documentation>Set this to true if this mod is at the c-terminus of the peptide. Omit if this is not a c-terminal mod.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
@@ -1094,6 +1110,28 @@
 					</xs:annotation>
 				</xs:element>
 			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="matched_proteins_for_peptide">
+		<xs:annotation>
+			<xs:documentation>Optional. A list of matched_proteins to which this peptide was matched during protein inference. If this is not present, Limelight uses a simple string matching algorithm to map peptides to proteins. NOTE: If your search includes restrictions on which proteins may be matched by a peptide (e.g. searching for mods only at the n-terminus of a protein), then this element must be present for all peptides to avoid Limelight matching peptides to incorrect proteins.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="matched_protein_for_peptide" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="matched_protein_for_peptide">
+		<xs:annotation>
+			<xs:documentation>A protein to which this peptide was matched</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="id" type="xs:integer" use="required">
+				<xs:annotation>
+					<xs:documentation>The id of the matched_protein in the matched_proteins section to which this peptide was matched.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 </xs:schema>
