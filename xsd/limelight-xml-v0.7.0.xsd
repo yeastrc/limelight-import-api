@@ -43,6 +43,11 @@
 				</xs:annotation>
 				<!-- Attribute name must match string in Java class XSD_ElementAttributeNamesConstants  -->
 			</xs:attribute>
+			<xs:attribute name="data_path">
+				<xs:annotation>
+					<xs:documentation>An optional string meant to designate where on the filesystem the data encoded by this limelight XML document may be found. E.g., the output directory of the software analysis pipeline.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 		<xs:unique name="reported_peptide_string_key">
 			<xs:annotation>
