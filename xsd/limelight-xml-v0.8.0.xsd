@@ -821,6 +821,16 @@
 					<xs:documentation>The predicted charge of the precursor ion. Used for accurately annotating spectra in web interface.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="precursor_retention_time" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>(Optional) The retention time (in seconds) of the precursor ion. If not present, the retention times from the optionally uploaded mz data files (e.g. mzML will be used).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="precursor_m_z" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>(Optional) The observed m/z of the precursor ion. If not present, the measured m/z from the optionally uploaded mz data files (e.g. mzML will be used).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 			<xs:attribute name="scan_file_name" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>(Optional) The filename of the file in which this scan may be found. Will be used to locate the spectrum associated with this PSM when data are uploaded.</xs:documentation>
