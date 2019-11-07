@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}filterable_psm_annotation_type" maxOccurs="unbounded"/>
+ *         &lt;element ref="{}reporter_ion" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,41 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "filterablePsmAnnotationType"
+    "reporterIon"
 })
-@XmlRootElement(name = "filterable_psm_annotation_types")
-public class FilterablePsmAnnotationTypes {
+@XmlRootElement(name = "reporter_ions")
+public class ReporterIons {
 
-    @XmlElement(name = "filterable_psm_annotation_type", required = true)
-    protected List<FilterablePsmAnnotationType> filterablePsmAnnotationType;
+    @XmlElement(name = "reporter_ion", required = true)
+    protected List<ReporterIon> reporterIon;
 
     /**
-     * Gets the value of the filterablePsmAnnotationType property.
+     * Gets the value of the reporterIon property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the filterablePsmAnnotationType property.
+     * This is why there is not a <CODE>set</CODE> method for the reporterIon property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getFilterablePsmAnnotationType().add(newItem);
+     *    getReporterIon().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link FilterablePsmAnnotationType }
+     * {@link ReporterIon }
      * 
      * 
      */
-    public List<FilterablePsmAnnotationType> getFilterablePsmAnnotationType() {
-        if (filterablePsmAnnotationType == null) {
-            filterablePsmAnnotationType = new ArrayList<FilterablePsmAnnotationType>();
+    public List<ReporterIon> getReporterIon() {
+        if (reporterIon == null) {
+            reporterIon = new ArrayList<ReporterIon>();
         }
-        return this.filterablePsmAnnotationType;
+        return this.reporterIon;
     }
 
 }

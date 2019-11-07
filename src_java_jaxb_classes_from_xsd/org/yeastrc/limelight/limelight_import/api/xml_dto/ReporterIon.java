@@ -8,6 +8,7 @@
 
 package org.yeastrc.limelight.limelight_import.api.xml_dto;
 
+import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -24,8 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="description" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="mass" use="required" type="{http://www.w3.org/2001/XMLSchema}decimal" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -35,60 +35,34 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = "descriptive_reported_peptide_annotation_type")
-public class DescriptiveReportedPeptideAnnotationType {
+@XmlRootElement(name = "reporter_ion")
+public class ReporterIon {
 
-    @XmlAttribute(name = "name", required = true)
-    protected String name;
-    @XmlAttribute(name = "description")
-    protected String description;
+    @XmlAttribute(name = "mass", required = true)
+    protected BigDecimal mass;
 
     /**
-     * Gets the value of the name property.
+     * Gets the value of the mass property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link BigDecimal }
      *     
      */
-    public String getName() {
-        return name;
+    public BigDecimal getMass() {
+        return mass;
     }
 
     /**
-     * Sets the value of the name property.
+     * Sets the value of the mass property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link BigDecimal }
      *     
      */
-    public void setName(String value) {
-        this.name = value;
-    }
-
-    /**
-     * Gets the value of the description property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Sets the value of the description property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDescription(String value) {
-        this.description = value;
+    public void setMass(BigDecimal value) {
+        this.mass = value;
     }
 
 }
