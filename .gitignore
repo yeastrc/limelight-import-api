@@ -3,4 +3,6 @@
 /deploy/
 .classpath
 .project
-
+/.idea/
+/.gradle/
+/build/
