@@ -810,6 +810,7 @@
 						<xs:documentation>Not common. If there are PSM-level variable / dynamic modification data (ie, each PSM has a distinct mass for the observed modification), such as in the case of open mod searches, store those data here. Do not list static / fixed modifications (e.g. 57 on C)  NOTE: If PSM modifications are defined: All PSMs needs to have a psm_modifications section with its own mass defined for the given position. And, these positions must match one or more of the positions defined for modifications the peptide level.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
+				<xs:element ref="reporter_ions" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="scan_number" type="xs:positiveInteger" use="required">
 				<xs:annotation>
@@ -1145,6 +1146,28 @@
 			<xs:attribute name="id" type="xs:integer" use="required">
 				<xs:annotation>
 					<xs:documentation>The id of the matched_protein in the matched_proteins section to which this peptide was matched.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="reporter_ions">
+		<xs:annotation>
+			<xs:documentation>Optional. If any reporter ions were observed as part of this PSM identification, list them here. Will be listed in limelight when viewing PSMs and spectra.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="reporter_ion" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="reporter_ion">
+		<xs:annotation>
+			<xs:documentation>A reporter ion that was observed as part of this PSM</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="mass" type="xs:decimal" use="required">
+				<xs:annotation>
+					<xs:documentation>The expected mass of the reporter ion that was observed.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
