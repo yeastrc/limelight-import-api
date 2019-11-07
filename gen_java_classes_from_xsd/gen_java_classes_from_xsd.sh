@@ -16,4 +16,5 @@ xjc \
   -p org.yeastrc.limelight.limelight_import.api.xml_dto  \
   ../xsd/limelight-xml-v0.8.0.xsd
 
-
+# windows command:
+xjc -d ..\src_java_jaxb_classes_from_xsd -p org.yeastrc.limelight.limelight_import.api.xml_dto ..\xsd/limelight-xml-vX.X.X.xsd
