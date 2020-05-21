@@ -168,11 +168,6 @@
 						<xs:documentation>The variable modifications identified for this reported peptide. E.g., if phosphorylation was searched for, store those modifcations here. Do not list static / fixed modifications (e.g. 57 on C)</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element ref="peptide_open_modification" minOccurs="0">
-					<xs:annotation>
-						<xs:documentation>If an open mod mass is associated with this identified peptide, use this element to specify. Important: If the same peptide sequence is identified but with different open modifications (e.g. PEPTIDE +20 and PEPTIDE +169), these should be entered as separate reported peptides in Limelight XML. The open mod mass should also be part of the unique reported peptide string (e.g. PEP[+16]TIDE+169 if the peptide was IDed with an open mod mass of 169. Also, all PSMs that identified this peptide with this open mod mass should be listed under the respective reported peptide.</xs:documentation>
-					</xs:annotation>
-				</xs:element>
 				<xs:element ref="peptide_isotope_labels" minOccurs="0"/>
 				<xs:element ref="matched_proteins_for_peptide" minOccurs="0"/>
 			</xs:sequence>
@@ -817,7 +812,7 @@
 				</xs:element>
 				<xs:element ref="psm_open_modification" minOccurs="0">
 					<xs:annotation>
-						<xs:documentation>If an open modification was found for this PSM (e.g. using msfragger, magnum or cometPTM) associate the found open mod mass with the PSM here.</xs:documentation>
+						<xs:documentation>If an open modification was found for this PSM (e.g. using msfragger, magnum or cometPTM) associate the found open mod mass with the PSM here. An open mod is essentially an unidentified and unlocalized difference in mass between this peptide and the observed mass of the precursor--though some algorithms will attempt to localize it. There can only be one open mod mass associated with a PSM, though there may be multiple localizations for it (see "psm_open_modification_position" element). </xs:documentation>
 					</xs:annotation>
 				</xs:element>
 				<xs:element ref="reporter_ions" minOccurs="0"/>
@@ -1182,21 +1177,12 @@
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="peptide_open_modification">
-		<xs:complexType>
-			<xs:attribute name="mass" type="mass" use="required">
-				<xs:annotation>
-					<xs:documentation>The neutral monoisotopic mass, in daltons, of the open modification of this peptide. Important: This value should be rounded if PSMs that identify this open mod mass all have slightly different open mod masses. For example if PSMs have open mod masses of 124.112 and 124.122, you may wish to use 124.1 or 124 as the open mod mass for this peptide ID, depending on what precision you'd like to use to group PSMs and compare peptides between experiments. Rounding to the nearest int is recommended.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-		</xs:complexType>
-	</xs:element>
 	<xs:element name="psm_open_modification">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="psm_open_modification_position" minOccurs="0" maxOccurs="unbounded">
 					<xs:annotation>
-						<xs:documentation>Open modifications may or may not be localized within a PSM. Additionally, the search pipeline may present multiple possible positions for an open modification. List any possible open mod localizations listed by the search pipeline here.</xs:documentation>
+						<xs:documentation>Open modifications may or may not be localized within a PSM. Additionally, the search pipeline may present multiple possible positions for an open modification, as is the case with MSFragger. List any possible open mod localizations listed by the search pipeline here.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 			</xs:sequence>
