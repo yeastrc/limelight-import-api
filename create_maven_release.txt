@@ -1,1 +1,1 @@
-c:\apache-maven-3.6.1\bin\mvn install:install-file -DgroupId=org.yeastrc -DartifactId=limelight-import-api -Dversion=0.9.0 -Dfile=build\libs\limelight-import-api.jar -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=.  -DcreateChecksum=true
+c:\apache-maven-3.6.3\bin\mvn install:install-file -DgroupId=org.yeastrc -DartifactId=limelight-import-api -Dversion=0.12.0 -Dfile=build\libs\limelight-import-api.jar -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=.  -DcreateChecksum=true
