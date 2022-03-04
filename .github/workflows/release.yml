@@ -53,7 +53,7 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
       - name: Switch to repository branch
-        run: git checkout repository
+        run: git fetch && git checkout repository
       - name: Publish to local maven repo
         run: mvn install:install-file -DgroupId=org.yeastrc -DartifactId=limelight-import-api -Dversion=${{ steps.get_version.outputs.VERSION }} -Dfile=build/libs/${{ env.LIB_JAR }} -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=.  -DcreateChecksum=true
       - name: Switch to repository branch
