@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2020 rel. 2 (x64) (http://www.altova.com) by Michael Riffle (University of Washington) -->
+<!-- edited with XMLSpy v2022 (x64) (http://www.altova.com) by Mtest User (Mtest Company) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" vc:minVersion="1.1">
 	<xs:element name="limelight_input">
 		<xs:annotation>
@@ -30,6 +30,7 @@
 						<xs:documentation>(Optional) The configuration files associated with the search.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
+				<xs:element ref="fasta_file_statistics" minOccurs="0"/>
 				<xs:element ref="conversion_program" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="fasta_filename" type="xs:string" use="required">
@@ -368,6 +369,16 @@
 			<xs:attribute name="id" type="xs:integer">
 				<xs:annotation>
 					<xs:documentation>Optional. A unique id number to use as a reference for this protein sequence in this file. Must be present if matched_proteins_for_peptide is included for peptides (ie, protein inference results are imported).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="is_decoy" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>(Optional, default false) Set to true if this protein is a decoy protein, used in target/decoy error estimation.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="is_independent_decoy" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>(Optional, default false) An independent decoy (also known as a unknown decoy or secret decoy) is a known true negative that the software pipeline thinks is a target. Used to estimate the true error rate of search results.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
@@ -847,6 +858,16 @@
 					<xs:documentation>(Optional) The name of the subgroup to which this PSM belongs. An example is the name of the input pep XML file or scan file from which this PSM was derived, if many such files were analyzed by the same percolator run. All subgroup names found in the same limelight XML file may be compared to one another within limelight.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="is_decoy" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>(Optional, default false) Set to true if this PSM is a decoy hit, used in target/decoy error estimation.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="is_independent_decoy" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>(Optional, default false) An independent decoy (also known as a unknown decoy or secret decoy) is a known true negative that the software pipeline thinks is a target. Used to estimate the true error rate of search results.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 		<xs:unique name="psm_program_score_unique">
 			<xs:annotation>
@@ -1213,6 +1234,30 @@
 			<xs:attribute name="is_c_terminal" type="xs:boolean" use="optional">
 				<xs:annotation>
 					<xs:documentation>Set this to true if this mod is at the c-terminus of the peptide. Omit if this is not a c-terminal mod.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="fasta_file_statistics">
+		<xs:complexType>
+			<xs:attribute name="SHA384" use="required">
+				<xs:annotation>
+					<xs:documentation>The SHA384 hash for the FASTA file.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="num_targets" use="required">
+				<xs:annotation>
+					<xs:documentation>The number of distinct target protein sequences present in the file. This includes all non-decoys, so would include the number of independent decoys (unknown/secret decoys).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="num_decoys">
+				<xs:annotation>
+					<xs:documentation>(Optional, default 0) The number of distinct decoy protein sequences present in the FASTA file.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="num_independent_decoys">
+				<xs:annotation>
+					<xs:documentation>(Optional, default 0) The number of distinct independent decoy sequences present in the FASTA file. An independent decoy (also known as a unknown decoy or secret decoy) is a known true negative that the software pipeline thinks is a target. Used to estimate the true error rate of search results.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
