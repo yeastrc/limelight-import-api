@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.com/yeastrc/limelight-import-api.svg?branch=master)](https://travis-ci.com/yeastrc/limelight-import-api)
 
 # limelight-import-api
 Included in this repository are the schema definition for Limelight XML files and
