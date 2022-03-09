@@ -1240,22 +1240,22 @@
 	</xs:element>
 	<xs:element name="fasta_file_statistics">
 		<xs:complexType>
-			<xs:attribute name="SHA384" use="required">
+			<xs:attribute name="SHA384" type="xs:string" use="required">
 				<xs:annotation>
 					<xs:documentation>The SHA384 hash for the FASTA file.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="num_targets" use="required">
+			<xs:attribute name="num_targets" type="xs:nonNegativeInteger" use="required">
 				<xs:annotation>
 					<xs:documentation>The number of distinct target protein sequences present in the file. This includes all non-decoys, so would include the number of independent decoys (unknown/secret decoys).</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="num_decoys">
+			<xs:attribute name="num_decoys" type="xs:nonNegativeInteger">
 				<xs:annotation>
 					<xs:documentation>(Optional, default 0) The number of distinct decoy protein sequences present in the FASTA file.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="num_independent_decoys">
+			<xs:attribute name="num_independent_decoys" type="xs:nonNegativeInteger">
 				<xs:annotation>
 					<xs:documentation>(Optional, default 0) The number of distinct independent decoy sequences present in the FASTA file. An independent decoy (also known as a unknown decoy or secret decoy) is a known true negative that the software pipeline thinks is a target. Used to estimate the true error rate of search results.</xs:documentation>
 				</xs:annotation>
