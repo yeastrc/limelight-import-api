@@ -1240,7 +1240,7 @@
 	</xs:element>
 	<xs:element name="fasta_file_statistics">
 		<xs:complexType>
-			<xs:attribute name="SHA384" type="xs:string" use="required">
+			<xs:attribute name="SHA384" type="xs:base64Binary" use="required">
 				<xs:annotation>
 					<xs:documentation>The SHA384 hash for the FASTA file.</xs:documentation>
 				</xs:annotation>
