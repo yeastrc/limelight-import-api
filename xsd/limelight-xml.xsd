@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2022 (x64) (http://www.altova.com) by Mtest User (Mtest Company) -->
+<!-- edited with XMLSpy v2024 (x64) (http://www.altova.com) by Michael Riffle (University of Washington) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" vc:minVersion="1.1">
 	<xs:element name="limelight_input">
 		<xs:annotation>
@@ -83,6 +83,17 @@
 						<xs:sequence>
 							<xs:element ref="filterable_reported_peptide_annotation_types" minOccurs="0"/>
 							<xs:element ref="descriptive_reported_peptide_annotation_types" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="modification_position_annotation_types" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Any annotations or scores associated with predicted modification localizations--such as probabilities of that localization in the peptide.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="filterable_modification_position_annotation_types" minOccurs="0"/>
+							<xs:element ref="descriptive_modification_position_annotation_types" minOccurs="0"/>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -485,6 +496,11 @@
 					<xs:documentation>Set this to true if this mod is at the c-terminus of the peptide. Omit if this is not a c-terminal mod.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="id" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>A unique ID for this specific modification in this peptide. This is required if there are annotations (scores) being included for the localiation of modifications at the PSM level.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="peptide_isotope_labels">
@@ -818,7 +834,7 @@
 				</xs:element>
 				<xs:element ref="psm_modifications" minOccurs="0">
 					<xs:annotation>
-						<xs:documentation>Not common. If there are PSM-level variable / dynamic modification data (ie, each PSM has a distinct mass for the observed modification), such as in the case of open mod searches, store those data here. Do not list static / fixed modifications (e.g. 57 on C)  NOTE: If PSM modifications are defined: All PSMs needs to have a psm_modifications section with its own mass defined for the given position. And, these positions must match one or more of the positions defined for modifications the peptide level.</xs:documentation>
+						<xs:documentation>DEPRECATED--will be removed in near future. Use psm_open_modification instead. Not common. If there are PSM-level variable / dynamic modification data (ie, each PSM has a distinct mass for the observed modification), such as in the case of open mod searches, store those data here. Do not list static / fixed modifications (e.g. 57 on C)  NOTE: If PSM modifications are defined: All PSMs needs to have a psm_modifications section with its own mass defined for the given position. And, these positions must match one or more of the positions defined for modifications the peptide level.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 				<xs:element ref="psm_open_modification" minOccurs="0">
@@ -827,6 +843,7 @@
 					</xs:annotation>
 				</xs:element>
 				<xs:element ref="reporter_ions" minOccurs="0"/>
+				<xs:element ref="modification_position_annotations" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="scan_number" type="xs:positiveInteger" use="required">
 				<xs:annotation>
@@ -1221,6 +1238,10 @@
 	</xs:element>
 	<xs:element name="psm_open_modification_position">
 		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_open_modification_position_annotations" minOccurs="0"/>
+				<xs:element ref="descriptive_open_modification_position_annotations" minOccurs="0"/>
+			</xs:sequence>
 			<xs:attribute name="position" type="peptide_position" use="optional">
 				<xs:annotation>
 					<xs:documentation>The position in the peptide (starting at 1) of the modification. If this is an n- or c-terminal mod, omit the position.</xs:documentation>
@@ -1260,6 +1281,220 @@
 					<xs:documentation>(Optional, default 0) The number of distinct independent decoy sequences present in the FASTA file. An independent decoy (also known as a unknown decoy or secret decoy) is a known true negative that the software pipeline thinks is a target. Used to estimate the true error rate of search results.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_modification_position_annotation_type">
+		<xs:annotation>
+			<xs:documentation>A numeric type of modification localization score (e.g., probability of this localization) that may be used for filtering in Limelight.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name for this score, such as "q-value". Displayed on web site.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A description for what this score is. Will be shown in limelight as a tooltip for this score.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="filter_direction" type="filter_direction_type" use="required">
+				<xs:annotation>
+					<xs:documentation>The direction a filterable annotation type is sorted in.  If set to "below", attributes with lower values are considered more significant (such as in the case of p-values). If set to "above", attributes with higher values are considered more significant (such as in the case of XCorr).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="default_filter_value" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>If present, the data will be filtered by default in limelight using this annotation type and this value. For example, if this annotation type is FDR or q-value, a default_filter_value might be 0.01 if the data are to be filtered by default on a q-value of 0.01.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_modification_position_annotation_types">
+		<xs:annotation>
+			<xs:documentation>A collection of annotation (score) types that will be present for localized variable or open modifications at the PSM level.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_modification_position_annotation_type" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_modification_position_annotation_type">
+		<xs:annotation>
+			<xs:documentation>An annotation of any type (numeric or string) that is not meant to be used as a possible filter for filtering out modification  based on quality of matches. Example could include "scan number" or "charge"</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name for this score, such as "q-value". Displayed on web site.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A description for what this score is. Will be shown in limelight as a tooltip for this score.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_modification_position_annotation_types">
+		<xs:annotation>
+			<xs:documentation>The collection of annotation types (string or numeric) associated with modifications  that are descriptive or not meant to be used to filter based on quality</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="descriptive_modification_position_annotation_type" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_modification_position_annotation">
+		<xs:complexType>
+			<xs:attribute name="peptide_modification_id" type="xs:integer" use="required">
+				<xs:annotation>
+					<xs:documentation>The unique id for a modification position in the parent peptide. See the peptide_modification element under peptide_modifications for the parent peptide.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="search_program" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the psm annotation type (e.g., "q-value"). Must be found in the possible score types for the above search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The value (ie, score) assigned for the given annotationtype from the given search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_modification_position_annotation">
+		<xs:complexType>
+			<xs:attribute name="peptide_modification_id" type="xs:integer" use="required">
+				<xs:annotation>
+					<xs:documentation>The unique id for a modification position in the parent peptide. See the peptide_modification element under peptide_modifications for the parent peptide.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="search_program" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the psm annotation type (e.g., "q-value"). Must be found in the possible score types for the above search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:decimal" use="required">
+				<xs:annotation>
+					<xs:documentation>The value (ie, score) assigned for the given annotationtype from the given search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_modification_position_annotations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_modification_position_annotation" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>When a PSM contains scores for the localization of a modification, those get encoded here. The "filterable" annotations are those that are numeric and indicate quality, and can be used for filtering data in Limelight. This element is a single instance of a score (e.g. the probability that a localization is correct).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_modification_position_annotations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="descriptive_modification_position_annotation" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Any annotations of a modification localization that are not numeric or will not be used to filter results should be placed here.  This is a single instance of such an annotation.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_open_modification_position_annotation">
+		<xs:annotation>
+			<xs:documentation>When a PSM contains scores for the localization of a modification, those get encoded here. The "filterable" annotations are those that are numeric and indicate quality, and can be used for filtering data in Limelight. This element is a single instance of a score (e.g. the probability that a localization is correct).</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="search_program" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the psm annotation type (e.g., "q-value"). Must be found in the possible score types for the above search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:decimal" use="required">
+				<xs:annotation>
+					<xs:documentation>The value (ie, score) assigned for the given annotationtype from the given search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_open_modification_position_annotations">
+		<xs:annotation>
+			<xs:documentation>When a PSM contains scores for the localization of a modification, those get encoded here. The "filterable" annotations are those that are numeric and indicate quality, and can be used for filtering data in Limelight.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_open_modification_position_annotation" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_open_modification_position_annotation">
+		<xs:annotation>
+			<xs:documentation>Any annotations of a modification localization that are not numeric or will not be used to filter results should be placed here.  This is a single instance of such an annotation.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="search_program" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the psm annotation type (e.g., "q-value"). Must be found in the possible score types for the above search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The value (ie, score) assigned for the given annotationtype from the given search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="descriptive_open_modification_position_annotations">
+		<xs:annotation>
+			<xs:documentation>Any annotations of a modification localization that are not numeric or will not be used to filter results should be placed here. </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="descriptive_open_modification_position_annotation" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="modification_position_annotations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_modification_position_annotations" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>When a PSM contains scores for the localization of a modification, those get encoded here. The "filterable" annotations are those that are numeric and indicate quality, and can be used for filtering data in Limelight.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="descriptive_modification_position_annotations" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Any annotations of a modification localization that are not numeric or will not be used to filter results should be placed here. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 </xs:schema>
