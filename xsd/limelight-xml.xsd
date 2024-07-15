@@ -50,13 +50,6 @@
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
-		<xs:unique name="reported_peptide_string_key">
-			<xs:annotation>
-				<xs:documentation>Ensures the reported peptide strings are unique.</xs:documentation>
-			</xs:annotation>
-			<xs:selector xpath="reported_peptides/reported_peptide"/>
-			<xs:field xpath="@reported_peptide_string"/>
-		</xs:unique>
 	</xs:element>
 	<xs:element name="search_program">
 		<xs:annotation>
@@ -166,14 +159,6 @@
 							<xs:element ref="descriptive_reported_peptide_annotations" minOccurs="0"/>
 						</xs:sequence>
 					</xs:complexType>
-					<xs:unique name="reported_peptide_score_program_unique">
-						<xs:annotation>
-							<xs:documentation>Ensure a reported peptide only has one score for a given type from a given program.</xs:documentation>
-						</xs:annotation>
-						<xs:selector xpath="*/*"/>
-						<xs:field xpath="@search_program"/>
-						<xs:field xpath="@annotation_name"/>
-					</xs:unique>
 				</xs:element>
 				<xs:element ref="peptide_modifications" minOccurs="0">
 					<xs:annotation>
@@ -671,7 +656,6 @@
 			<xs:documentation>Reported sequence strings must be of this type, includes only amino acid sequence</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:pattern value="([A-Z]+)"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="peptide_position">
@@ -886,14 +870,6 @@
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
-		<xs:unique name="psm_program_score_unique">
-			<xs:annotation>
-				<xs:documentation>Ensure a PSM only has one score for a given name from a given search program.</xs:documentation>
-			</xs:annotation>
-			<xs:selector xpath="*/*"/>
-			<xs:field xpath="@search_program"/>
-			<xs:field xpath="@annotation_name"/>
-		</xs:unique>
 	</xs:element>
 	<xs:element name="psms">
 		<xs:complexType>
@@ -911,13 +887,6 @@
 				<xs:element ref="search_program" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
-		<xs:unique name="search_program_unique">
-			<xs:annotation>
-				<xs:documentation>Ensure a given name is only present once among the search programs.</xs:documentation>
-			</xs:annotation>
-			<xs:selector xpath="search_program"/>
-			<xs:field xpath="@name"/>
-		</xs:unique>
 	</xs:element>
 	<xs:element name="configuration_file">
 		<xs:annotation>
@@ -977,13 +946,6 @@
 				<xs:element ref="static_modification" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
-		<xs:unique name="static_mod_residue_unique">
-			<xs:annotation>
-				<xs:documentation>Ensure only one static mod is present for any amino acid residue.</xs:documentation>
-			</xs:annotation>
-			<xs:selector xpath="static_modification"/>
-			<xs:field xpath="@amino_acid"/>
-		</xs:unique>
 	</xs:element>
 	<xs:element name="search_program_info">
 		<xs:annotation>
