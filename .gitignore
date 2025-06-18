@@ -8,3 +8,6 @@
 /build/
 
 /.settings/
+
+/src_java_jaxb_classes_from_xsd/
+
