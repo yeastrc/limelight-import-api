@@ -90,6 +90,16 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
+				<xs:element name="psm_peptide_position_annotation_types" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The types of annotations this search program may have at the PSM level for the Peptide Position.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="filterable_psm_peptide_position_annotation_types" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
 				<xs:element name="matched_protein_annotation_types" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>The types of annotations this search program may have at the reported peptide level.</xs:documentation>
@@ -828,6 +838,7 @@
 				</xs:element>
 				<xs:element ref="reporter_ions" minOccurs="0"/>
 				<xs:element ref="modification_position_annotations" minOccurs="0"/>
+				<xs:element ref="psm_peptide_position_annotations" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="scan_number" type="xs:positiveInteger" use="required">
 				<xs:annotation>
@@ -1459,4 +1470,96 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	
+	<!--   ***************    NEW    ************************** -->
+	
+	
+	<xs:element name="filterable_psm_peptide_position_annotation_type">
+		<xs:annotation>
+			<xs:documentation>A numeric type of score for the peptide position of the PSM (e.g., probability of this position) that may be used for filtering in Limelight.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name for this score, such as "??????". Displayed on web site.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A description for what this score is. Will be shown in limelight as a tooltip for this score.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="filter_direction" type="filter_direction_type" use="required">
+				<xs:annotation>
+					<xs:documentation>The direction a filterable annotation type is sorted in.  If set to "below", attributes with lower values are considered more significant (such as in the case of p-values). If set to "above", attributes with higher values are considered more significant (such as in the case of XCorr).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<!--
+			NO default filter value
+			<xs:attribute name="default_filter_value" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>If present, the data will be filtered by default in limelight using this annotation type and this value. For example, if this annotation type is FDR or q-value, a default_filter_value might be 0.01 if the data are to be filtered by default on a q-value of 0.01.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			-->
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_psm_peptide_position_annotation_types">
+		<xs:annotation>
+			<xs:documentation>A collection of annotation (score) types that will be present for peptide position at the PSM level.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_psm_peptide_position_annotation_type" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="filterable_psm_peptide_position_annotation">
+		<xs:complexType>
+			<xs:attribute name="search_program" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the search program, must be found in the search_programs element</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="annotation_name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the psm peptide position annotation type (e.g., "?????"). Must be found in the possible score types (filterable_psm_peptide_position_annotation_type) for the above search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="position" type="peptide_position" use="required">
+				<xs:annotation>
+					<xs:documentation>The position in the peptide (starting at 1) of the score.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="value" type="xs:decimal" use="required">
+				<xs:annotation>
+					<xs:documentation>The value (ie, score) assigned for the given annotationtype from the given search program</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterable_psm_peptide_position_annotations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_psm_peptide_position_annotation" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>When a PSM contains scores for each position of the peptide, those get encoded here. The "filterable" annotations are those that are numeric and indicate quality, and can be used for filtering data in Limelight. This element is a single instance of a score (e.g. the probability that the PSM match is correct for that position).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="psm_peptide_position_annotations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filterable_psm_peptide_position_annotations" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>When a PSM contains scores for each position of the peptide, those get encoded here. The "filterable" annotations are those that are numeric and indicate quality, and can be used for filtering data in Limelight.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
 </xs:schema>
