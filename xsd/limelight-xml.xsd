@@ -1529,7 +1529,7 @@
 			</xs:attribute>
 			<xs:attribute name="position" type="peptide_position" use="required">
 				<xs:annotation>
-					<xs:documentation>The position in the peptide (starting at 1) of the score.</xs:documentation>
+					<xs:documentation>The position in the peptide (starting at 1) of the score.  Each 'filterable_psm_peptide_position_annotation' element under a 'psm' must have unique values for the combined key of 'search_program' 'annotation_name' 'position' </xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 			<xs:attribute name="value" type="xs:decimal" use="required">
