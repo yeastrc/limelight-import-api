@@ -1009,6 +1009,7 @@
 				<xs:element ref="visible_psm_annotations"/>
 				<xs:element ref="visible_reported_peptide_annotations" minOccurs="0"/>
 				<xs:element ref="visible_matched_protein_annotations" minOccurs="0"/>
+				<xs:element ref="visible_psm_peptide_position_annotations" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -1035,6 +1036,16 @@
 	<xs:element name="visible_matched_protein_annotations">
 		<xs:annotation>
 			<xs:documentation>The protein-level annotations that are visible by default.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="search_annotation" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="visible_psm_peptide_position_annotations">
+		<xs:annotation>
+			<xs:documentation>The PSM Peptide Position annotations that are visible by default.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
