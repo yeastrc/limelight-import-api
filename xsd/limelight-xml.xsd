@@ -1481,10 +1481,6 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	
-	<!--   ***************    NEW    ************************** -->
-	
-	
 	<xs:element name="filterable_psm_peptide_position_annotation_type">
 		<xs:annotation>
 			<xs:documentation>A numeric type of score for the peptide position of the PSM (e.g., probability of this position) that may be used for filtering in Limelight.</xs:documentation>
@@ -1505,14 +1501,6 @@
 					<xs:documentation>The direction a filterable annotation type is sorted in.  If set to "below", attributes with lower values are considered more significant (such as in the case of p-values). If set to "above", attributes with higher values are considered more significant (such as in the case of XCorr).</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<!--
-			NO default filter value
-			<xs:attribute name="default_filter_value" type="xs:decimal">
-				<xs:annotation>
-					<xs:documentation>If present, the data will be filtered by default in limelight using this annotation type and this value. For example, if this annotation type is FDR or q-value, a default_filter_value might be 0.01 if the data are to be filtered by default on a q-value of 0.01.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			-->
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="filterable_psm_peptide_position_annotation_types">
@@ -1525,7 +1513,6 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	
 	<xs:element name="filterable_psm_peptide_position_annotation">
 		<xs:annotation>
 			<xs:documentation>Each 'filterable_psm_peptide_position_annotation' element under a 'psm' must have unique values for the combined key of 'search_program' and 'annotation_name' and 'position'.</xs:documentation>
@@ -1575,5 +1562,4 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	
 </xs:schema>
