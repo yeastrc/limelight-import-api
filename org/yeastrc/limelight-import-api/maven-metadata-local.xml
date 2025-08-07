@@ -3,7 +3,7 @@
   <groupId>org.yeastrc</groupId>
   <artifactId>limelight-import-api</artifactId>
   <versioning>
-    <release>4.3.0</release>
+    <release>4.3.1</release>
     <versions>
       <version>0.9.0</version>
       <version>0.10.0</version>
@@ -22,7 +22,8 @@
       <version>4.2.0-ALPHA.6</version>
       <version>4.2.0</version>
       <version>4.3.0</version>
+      <version>4.3.1</version>
     </versions>
-    <lastUpdated>20250805201802</lastUpdated>
+    <lastUpdated>20250807181706</lastUpdated>
   </versioning>
 </metadata>
