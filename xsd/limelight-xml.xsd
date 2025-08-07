@@ -346,6 +346,7 @@
 		<xs:annotation>
 			<xs:documentation>Indicates NO Matched Proteins.</xs:documentation>
 		</xs:annotation>
+		<xs:complexType/>
 	</xs:element>
 	<xs:element name="matched_proteins">
 		<xs:annotation>
