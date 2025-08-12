@@ -41,7 +41,7 @@
 				<xs:element ref="fasta_file_statistics" minOccurs="0"/>
 				<xs:element ref="conversion_program" minOccurs="0"/>
 			</xs:sequence>
-			<xs:attribute name="fasta_filename" type="xs:string" use="required">
+			<xs:attribute name="fasta_filename" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>The filename (not including the path) of the FASTA file used to search the data.</xs:documentation>
 				</xs:annotation>
