@@ -24,8 +24,12 @@ jobs:
           distribution: 'adopt'
       - name: Remove and remake the jaxb-generated dir
         run: rm -rf src_java_jaxb_classes_from_xsd && mkdir src_java_jaxb_classes_from_xsd
-      - name: Generate jaxb-generated files
-        run: xjc -d src_java_jaxb_classes_from_xsd -p org.yeastrc.limelight.limelight_import.api.xml_dto xsd/limelight-xml.xsd
+      - name: Download JAXB 3.0 (jakarta) XJC
+        run: |
+          curl -fsSL -o jaxb-ri.zip https://repo1.maven.org/maven2/com/sun/xml/bind/jaxb-ri/3.0.2/jaxb-ri-3.0.2.zip
+          unzip -q jaxb-ri.zip
+      - name: Generate jaxb-generated files (jakarta namespace)
+        run: ./jaxb-ri/bin/xjc.sh -d src_java_jaxb_classes_from_xsd -p org.yeastrc.limelight.limelight_import.api.xml_dto xsd/limelight-xml.xsd
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
@@ -55,7 +59,7 @@ jobs:
       - name: Switch to repository branch
         run: git stash && git fetch && git checkout repository
       - name: Publish to local maven repo
-        run: mvn install:install-file -DgroupId=org.yeastrc -DartifactId=limelight-import-api -Dversion=${{ steps.get_version.outputs.VERSION }} -Dfile=build/libs/${{ env.LIB_JAR }} -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=.  -DcreateChecksum=true
+        run: mvn install:install-file -DgroupId=org.yeastrc -DartifactId=limelight-import-api -Dversion=${{ steps.get_version.outputs.VERSION }} -Dfile=build/libs/${{ env.LIB_JAR }} -Dsources=build/libs/limelight-import-api-sources.jar -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=.  -DcreateChecksum=true
       - name: Commit local maven repo update
         run: |
           git config --global user.name 'GitHub Release Action'

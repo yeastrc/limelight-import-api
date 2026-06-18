@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
 
 import org.yeastrc.limelight.limelight_import.api.xml_dto.LimelightInput;
 

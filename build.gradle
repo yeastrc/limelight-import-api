@@ -36,13 +36,14 @@ processResources {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
-    // JAXB dependencies (Required for Java 11+)
-    implementation group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '2.3.2'
-    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
+    // JAXB 3.0 - jakarta.xml.bind namespace, still Java 8 compatible (Jakarta EE 9 baseline).
+    // Writers stay on Java 8 with this; deserializers (e.g. the limelight importer) can layer a
+    // newer jaxb-runtime 4.x on top - a 4.x runtime binds these jakarta-3.0 classes fine.
+    implementation group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '3.0.1'
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '3.0.2'
 }
 
 //  Assign to grgit, created by plugin
@@ -89,3 +90,13 @@ jar {
                      'Git-Branch': gitBranch ])
     }
 }
+
+//  Source jar (classifier 'sources') so IDEs (e.g. Eclipse on limelight-core) can attach and view
+//  the JAXB-generated class source. Includes the generated classes in src_java_jaxb_classes_from_xsd
+//  (produced by xjc before the build) plus the hand-written convenience/constant sources.
+task sourcesJar(type: Jar) {
+    archiveBaseName = 'limelight-import-api'
+    archiveClassifier = 'sources'
+    from sourceSets.main.allJava
+}
+assemble.dependsOn sourcesJar

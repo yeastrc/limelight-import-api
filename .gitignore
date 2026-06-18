@@ -11,3 +11,6 @@
 
 /src_java_jaxb_classes_from_xsd/
 
+
+# JAXB RI XJC download (used to generate the jakarta classes; see .github workflows)
+/jaxb-ri
