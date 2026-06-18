@@ -3,13 +3,13 @@
 Included in this repository are the schema definition for Limelight XML files and
 Java code for simplifying the creation of software to create Limelight XML files.
 
-Version 2.0.0 — Breaking Change for Converter Code (No XSD Changes)
+Version 5.0.0 — Breaking Change for Converter Code (No XSD Changes)
 --------------------
-**Release 2.0.0 migrates this API from JAXB 2 (the `javax.xml.bind` namespace) to
+**Release 5.0.0 migrates this API from JAXB 2 (the `javax.xml.bind` namespace) to
 JAXB 3.0 (the `jakarta.xml.bind` namespace).**
 
 **There are NO changes to the Limelight XML schema (XSD).** The XML format is
-unchanged: Limelight XML written by 1.x and by 2.0.0 is identical and fully
+unchanged: Limelight XML written by 1.x and by 5.0.0 is identical and fully
 interoperable in both directions, and all existing Limelight XML files remain
 valid. This is purely a Java-API (namespace) change, not a data-format change —
 the major version was bumped only because it is a source-incompatible change for
